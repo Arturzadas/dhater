@@ -5,10 +5,14 @@ const LikesModel = require('./models/model');
 
 module.exports.register = async (req, res) => {
   try {
+    //TODO check if user already exists!
+    //TODO use bcrypt!
+    //TODO sessions!
+    //TODO sanitize data before input into database!
     const reqUser = req.body;
-    // console.log(reqUser);
+    console.log(reqUser);
     const newUser = await UsersModel.create(reqUser);
-    // console.log(newUser)
+    console.log(newUser)
     res.status(201)
     res.send(newUser);
   } catch (err) {
@@ -18,6 +22,8 @@ module.exports.register = async (req, res) => {
 }
 
 module.exports.login = async (req, res) => {
+  //TODO sessions!
+  //TODO use bcrypt!
   try {
     const loginInfo = await req.body;
     const verify = await UsersModel.find(loginInfo);
@@ -26,6 +32,7 @@ module.exports.login = async (req, res) => {
       res.status(201)
       res.send(loginInfo);
     } else {
+      res.status(500);
       console.log('wrong credentials');
       res.send('wrong credentials');
     }

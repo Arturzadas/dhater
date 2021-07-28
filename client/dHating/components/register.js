@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Login from './login';
 
-function Register () {
+function Register ( { navigation } ) {
 
   const [register, setRegister] = React.useState({
     email: '',
@@ -36,7 +39,12 @@ function Register () {
         password: register.password,
       })
     })
-    .then(console.log(register))
+    .then(
+      (success) => {
+        console.log(success);
+        navigation.navigate(Login);
+      }
+    )
   }
 
   return (

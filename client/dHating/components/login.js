@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 function Login ({ navigation }) {
 
+  const [loginStatus, setLoginStatus] = React.useState(null);
+
   const [login, setLogin] = React.useState({
     email: '',
     password: ''
@@ -18,7 +20,6 @@ function Login ({ navigation }) {
       ...prevState,
       [name]: value
     }));
-    console.log(value);
   };
 
   async function userLogin () {
@@ -34,7 +35,16 @@ function Login ({ navigation }) {
         password: login.password,
       })
     })
-    .then(console.log(login))
+    .then((log) => {
+      console.log(log, 'log');
+      if (log.status === 201) {
+        //TODO navigation to user w/ props (userInfo) 🔽
+        // navigation.navigate(NextComponent)
+        console.log('okay')
+      } else if (log.status === 500) {
+        console.log('wrong credentials');
+      }
+    } );
   }
 
   return (
