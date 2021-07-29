@@ -14,7 +14,7 @@ export default function Upload({ route, navigation }) {
 
   const [topics, setTopics] = useState([]);
 
-  const [i, setI] = useState(0);
+  const [i, setI] = useState(1);
 
   const id = nextUser._id;
 
