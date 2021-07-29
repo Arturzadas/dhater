@@ -78,6 +78,7 @@ export default function Upload({ route, navigation }) {
 
   useEffect(()=> {
     updateUrl();
+    console.log(update);
   },[update])
 
   return (
@@ -88,7 +89,7 @@ export default function Upload({ route, navigation }) {
         <Pressable
           title='Continue'
           style={styles.button}
-          // onPress={() => { navigation.navigate('Q1') }}
+          onPress={() => { navigation.navigate('Q1', {nextUser: update}) }}
         >
           <Text style={styles.buttonText}>Continue</Text>
         </Pressable>}
