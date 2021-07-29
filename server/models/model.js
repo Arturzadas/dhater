@@ -22,8 +22,15 @@ const LikesSchema = new Schema({
   }
 })
 
+const PicSchema = new Schema({
+  uri: String,
+  user: String
+})
+
+const PicModel = mongoose.model('PicModel', PicSchema);
+
 const LikesModel = mongoose.model('LikesModel', LikesSchema);
 
 const UsersModel = mongoose.model('UsersModel', UsersSchema);
 
-module.exports = UsersModel, LikesModel;
+module.exports = UsersModel, LikesModel, PicModel;

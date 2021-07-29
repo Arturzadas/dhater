@@ -1,4 +1,5 @@
 
+const PicModel = require('./models/model');
 const UsersModel = require('./models/model');
 const LikesModel = require('./models/model');
 
@@ -17,7 +18,7 @@ module.exports.register = async (req, res) => {
     res.send(newUser);
   } catch (err) {
     res.status(500)
-    console.log('Error at postTopic:    ', err)
+    console.log('Error at controller:    ', err)
   }
 }
 
@@ -38,6 +39,20 @@ module.exports.login = async (req, res) => {
     }
   } catch (err) {
     res.status(500)
-    console.log('Error at postTopic:    ', err)
+    console.log('Error at controller:    ', err)
+  }
+}
+
+module.exports.picUpload = async (req, res) => {
+  try {
+    const pic = await req.body;
+    console.log(pic);
+    const verify = await PicModel.create(pic);
+    console.log('here', verify);
+    res.status(201);
+    res.json(verify);
+  } catch (err) {
+    res.status(500)
+    console.log('Error at controller:    ', err)
   }
 }
