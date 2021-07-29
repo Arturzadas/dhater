@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+// import Upload from './upload';
 
 function Login ({ navigation }) {
 
-  const [loginStatus, setLoginStatus] = React.useState(null);
+  const [loginStatus, setLoginStatus] = React.useState({});
 
   const [login, setLogin] = React.useState({
     email: '',
@@ -22,12 +23,12 @@ function Login ({ navigation }) {
     }));
   };
 
+
   async function userLogin () {
-    console.log(login);
     await fetch(`${api}/login`, {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
+        // Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -35,46 +36,53 @@ function Login ({ navigation }) {
         password: login.password,
       })
     })
-    .then((log) => {
-      console.log(log, 'log');
-      if (log.status === 201) {
-        //TODO navigation to user w/ props (userInfo) 🔽
-        // navigation.navigate(NextComponent)
-        console.log('okay')
-      } else if (log.status === 500) {
-        console.log('wrong credentials');
-      }
-    } );
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      setLoginStatus(response);
+      navigation.navigate('Upload', {user: response[0]});
+    })
   }
+
+
+      // const user = log.json();
+      // if (log.status === 201) {
+      //   console.log('log', user)
+      //   //TODO set {user} to App.js status in order to make it accessible from every component
+      //   setLoginStatus(log);
+      // } else if (log.status === 500) {
+      //   console.log('wrong credentials');
+      // }
 
   return (
     <View style={styles.view}>
       <Text style={styles.loginLabel}>Email</Text>
       <TextInput
         style={styles.input}
-        onChangeText={(text)=>handleChange('email', text)}
+        onChangeText={(text) => handleChange('email', text)}
         value={login.email}
         name="email"
       />
       <Text style={styles.loginLabel}>Password</Text>
       <TextInput
         style={styles.input}
-        onChangeText={(text)=>handleChange('password', text)}
+        onChangeText={(text) => handleChange('password', text)}
         value={login.password}
         name="password"
         secureTextEntry={true}
       />
       <Pressable
-      title='Start dHating'
-      style={styles.button}
-      onPress={() => {userLogin(login)}}
+        title='Start dHating'
+        style={styles.button}
+        onPress={() => { userLogin(login) }}
       >
         <Text style={styles.buttonText}>Start dHating</Text>
       </Pressable>
       <Pressable
-      title='Register'
-      style={styles.button}
-      onPress={() => {navigation.navigate('Register')}}
+        title='Register'
+        style={styles.button}
+        onPress={() => { navigation.navigate('Register') }}
       >
         <Text style={styles.buttonText}>Register</Text>
       </Pressable>

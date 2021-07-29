@@ -28,9 +28,9 @@ module.exports.login = async (req, res) => {
     const loginInfo = await req.body;
     const verify = await UsersModel.find(loginInfo);
     if (verify.length) {
-      console.log(verify, loginInfo);
+      console.log(verify, 'verify', loginInfo, 'loginInfo');
       res.status(201)
-      res.send(loginInfo);
+      res.json(verify);
     } else {
       res.status(500);
       console.log('wrong credentials');

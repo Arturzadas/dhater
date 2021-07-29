@@ -6,6 +6,8 @@ import Login from './login';
 
 function Register ( { navigation } ) {
 
+  const [loginStatus, setLoginStatus] = React.useState({});
+
   const [register, setRegister] = React.useState({
     email: '',
     password: '',
@@ -21,11 +23,10 @@ function Register ( { navigation } ) {
       ...prevState,
       [name]: value
     }));
-    console.log(value);
+    // console.log(value);
   };
 
   async function registerUser () {
-    console.log(register);
     await fetch(`${api}/register`, {
       method: 'POST',
       headers: {
@@ -37,14 +38,17 @@ function Register ( { navigation } ) {
         lastName: register.lastName,
         email: register.email,
         password: register.password,
+        step: 0
       })
     })
-    .then(
-      (success) => {
-        console.log(success);
-        navigation.navigate(Login);
-      }
-    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((response) => {
+        setLoginStatus(response);
+        // console.log(response)
+        navigation.navigate('Upload', {user: response});
+      })
   }
 
   return (

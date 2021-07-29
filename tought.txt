@@ -1,0 +1,8 @@
+TODO
+
+upload or login
+  set the user object as App.js state in order to make it accesible to every component from then on (useContext or something similar)
+  create the upload interface / use firestore and find system to display correct images
+  create a few topics/questions and create a screen for them
+  each user should have a 'progress' number associated to it, so we can know if he's uploaded the image and answered the dislike questions
+  start styling the app properly!

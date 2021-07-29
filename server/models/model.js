@@ -11,11 +11,13 @@ const UsersSchema = new Schema({
   password: String,
   firstName: String,
   lastName: String,
+  step: Number
 })
 
 const LikesSchema = new Schema({
   likes: {
     topic: String,
+    userEmail: String,
     disliked: Boolean
   }
 })
