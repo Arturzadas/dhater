@@ -12,14 +12,15 @@ const UsersSchema = new Schema({
   firstName: String,
   lastName: String,
   step: Number,
-  imgsrc: String
+  imgsrc: String,
+  disliked: [{id: String}]
 })
 
 const LikesSchema = new Schema({
   topic: String,
   imgsrc: String,
   //! disliked is an array of all user id's of people who have disliked this topic
-  disliked: [String]
+  disliked: [{id: String}]
 })
 
 

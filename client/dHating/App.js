@@ -6,6 +6,7 @@ import Login from './components/login';
 import Register from './components/register';
 import Upload from './components/upload';
 import Q1 from './components/Q1';
+import Dashboard from './components/dashboard';
 
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Upload" component={Upload} />
         <Stack.Screen name="Q1" component={Q1} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
       </Stack.Navigator>
     </NavigationContainer>
   );

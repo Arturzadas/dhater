@@ -27,6 +27,11 @@ app.post('/login', controller.login);
 app.put('/updatepic', controller.updatePic);
 // app.post('/addquestion', controller.addQuestion); //! to add topics, not needed for full application
 app.get('/topics', controller.getTopics);
+app.put('/updatelike', controller.updateLikes);
+
+
+
+
 app.listen(PORT, () => {
   console.log(`server running at  localhost:${PORT} ✔`);
 })

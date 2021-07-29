@@ -10,9 +10,11 @@ export default function Upload({ route, navigation }) {
 
   const { nextUser } = route.params;
 
-  const [answer, setAnswer] = useState(null);
+  const [currentTopic, setCurrentTopic] = useState({});
 
   const [topics, setTopics] = useState([]);
+
+  const [i, setI] = useState(0);
 
   const id = nextUser._id;
 
@@ -26,27 +28,76 @@ export default function Upload({ route, navigation }) {
       }
     })
     .then((response) => {
-      console.log(response, 'res')
       return response.json()
     })
     .then((data) => {
-      console.log(data, 'response')
       setTopics(data)
+      setCurrentTopic(data[0]);
     })
   }
 
+  console.log(currentTopic, 'current');
+
+  async function bundler () {
+    await getQuestions();
+    // displayNextTopic(true)
+  }
+
   useEffect(() => {
-    getQuestions();
+    bundler();
   }, [])
+
+  async function displayNextTopic(like) {
+    if (like) {
+      //go to next topic
+      console.log(i)
+      await setI((i) => i + 1);
+      setCurrentTopic(topics[i])
+    } else {
+      console.log('notliked')
+      fetch(`${api}/updatelike`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user: nextUser,
+          topic: currentTopic
+        })
+      })
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      await setI((i) => i + 1);
+      setCurrentTopic(topics[i])
+    }
+    if (i === topics.length) {
+      console.log('limit');
+      //navigate to dashboard
+      navigation.navigate('Dashboard', {user: nextUser});
+    }
+  }
 
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-    <Text>Question 1</Text>
-    <Pressable><Text>✔</Text></Pressable>
-    <Pressable><Text>✖</Text></Pressable>
-    
+      {currentTopic &&
+        <View>
+          <Text>{currentTopic.topic}</Text>
+          <Text>Disliked by (number)</Text>
+          <Pressable
+          onPress={() => displayNextTopic(true)}
+          ><Text>✔</Text></Pressable>
+          <Pressable
+          onPress={() => displayNextTopic(false)}
+          ><Text>✖</Text></Pressable>
+        </View>
+
+    }
 
     </View>
   );

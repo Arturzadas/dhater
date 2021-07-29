@@ -69,6 +69,20 @@ module.exports.getTopics = async (req, res) => {
 }
 
 
+module.exports.updateLikes = async (req, res) => {
+  try {
+    const dislike = req.body
+    const updateLike = await LikesModel.findByIdAndUpdate({_id: dislike.topic._id}, {$push : { disliked: {id :dislike.user._id}}}, {new: true});
+    const updateUser = await UsersModel.findByIdAndUpdate({_id: dislike.user._id}, {$push : {disliked: {id: dislike.topic._id}}}, {new: true});
+    const response = {user: updateUser, dislike: updateLike};
+    res.status(200);
+    console.log(response);
+    res.json(response);
+  } catch (err) {
+    res.status(500)
+    console.log('Error at controller:    ', err)
+  }
+}
 
 // module.exports.addQuestion = async (req, res) => {
 //   try {
