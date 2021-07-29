@@ -78,7 +78,6 @@ export default function Upload({ route, navigation }) {
 
   useEffect(()=> {
     updateUrl();
-    console.log(update);
   },[update])
 
   return (

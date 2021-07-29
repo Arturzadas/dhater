@@ -20,10 +20,13 @@ app.all('/*', function(req, res, next) {
   next();
 });
 
+  //! Routes
+
 app.post('/register', controller.register);
 app.post('/login', controller.login);
 app.put('/updatepic', controller.updatePic);
-
+// app.post('/addquestion', controller.addQuestion); //! to add topics, not needed for full application
+app.get('/topics', controller.getTopics);
 app.listen(PORT, () => {
   console.log(`server running at  localhost:${PORT} ✔`);
 })

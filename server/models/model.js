@@ -16,22 +16,15 @@ const UsersSchema = new Schema({
 })
 
 const LikesSchema = new Schema({
-  likes: {
-    topic: String,
-    userEmail: String,
-    disliked: Boolean
-  }
+  topic: String,
+  imgsrc: String,
+  //! disliked is an array of all user id's of people who have disliked this topic
+  disliked: [String]
 })
 
-const PicSchema = new Schema({
-  uri: String,
-  user: String
-})
-
-const PicModel = mongoose.model('PicModel', PicSchema);
 
 const LikesModel = mongoose.model('LikesModel', LikesSchema);
 
 const UsersModel = mongoose.model('UsersModel', UsersSchema);
 
-module.exports = UsersModel, LikesModel, PicModel;
+module.exports = {UsersModel:UsersModel, LikesModel:LikesModel};

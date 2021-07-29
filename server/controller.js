@@ -1,7 +1,5 @@
-
-const PicModel = require('./models/model');
-const UsersModel = require('./models/model');
-const LikesModel = require('./models/model');
+const {UsersModel} = require('./models/model');
+const {LikesModel} = require('./models/model');
 
 
 module.exports.register = async (req, res) => {
@@ -56,3 +54,32 @@ module.exports.updatePic = async (req, res) => {
     console.log('Error at controller:    ', err)
   }
 }
+
+
+module.exports.getTopics = async (req, res) => {
+  try {
+    const topics = await LikesModel.find();
+    res.status(200);
+    console.log(topics);
+    res.json(topics);
+  } catch (err) {
+    res.status(500)
+    console.log('Error at controller:    ', err)
+  }
+}
+
+
+
+// module.exports.addQuestion = async (req, res) => {
+//   try {
+//     const question = await req.body;
+//     const insert = await LikesModel.create(question);
+//     res.status(201);
+//     console.log(question, 'request');
+//     console.log(insert, 'response');
+//     res.json(insert);
+//   } catch(err) {
+//     res.status(500);
+//     console.log('Error at controller:    ', err);
+//   }
+// }
