@@ -22,7 +22,7 @@ app.all('/*', function(req, res, next) {
 
 app.post('/register', controller.register);
 app.post('/login', controller.login);
-app.post('/upload', controller.picUpload);
+app.put('/updatepic', controller.updatePic);
 
 app.listen(PORT, () => {
   console.log(`server running at  localhost:${PORT} ✔`);

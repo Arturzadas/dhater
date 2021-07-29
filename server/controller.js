@@ -43,14 +43,13 @@ module.exports.login = async (req, res) => {
   }
 }
 
-module.exports.picUpload = async (req, res) => {
+module.exports.updatePic = async (req, res) => {
   try {
-    const pic = await req.body;
-    console.log(pic);
-    const verify = await PicModel.create(pic);
-    console.log('here', verify);
+    const user = await req.body;
+    const update = await UsersModel.findOneAndUpdate({_id: user._id}, {imgsrc: user.imgsrc}, {new: true});
+    console.log('here', update);
     res.status(201);
-    res.json(verify);
+    res.json(update);
   } catch (err) {
     res.status(500)
     console.log('Error at controller:    ', err)

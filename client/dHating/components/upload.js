@@ -12,6 +12,8 @@ export default function Upload({ route, navigation }) {
 
   const [image, setImage] = useState(null);
 
+  const [update, setUpdate] = useState(user);
+
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -41,6 +43,8 @@ export default function Upload({ route, navigation }) {
     }
   };
 
+  console.log(update, '---------------------')
+
   const handleUpload = (image) => {
     const data = new FormData();
     data.append('file', image);
@@ -52,13 +56,16 @@ export default function Upload({ route, navigation }) {
       body: data,
     })
     .then(res=> res.json())
-    .then(data=> console.log(data));
+    .then(data=> setUpdate((prev) => ({
+      ...prev,
+      imgsrc: data.url
+    })));
   }
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+      {image && <Image source={{ uri: update.imgsrc }} style={{ width: 200, height: 200 }} />}
     </View>
   );
 }

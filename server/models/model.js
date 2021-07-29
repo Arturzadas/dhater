@@ -11,7 +11,8 @@ const UsersSchema = new Schema({
   password: String,
   firstName: String,
   lastName: String,
-  step: Number
+  step: Number,
+  imgsrc: String
 })
 
 const LikesSchema = new Schema({
