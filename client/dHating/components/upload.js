@@ -42,8 +42,6 @@ export default function Upload({ route, navigation }) {
     }
   };
 
-  console.log(update, '---------------------')
-
   const handleUpload = async (image) => {
     const data = new FormData();
     data.append('file', image);
@@ -59,7 +57,6 @@ export default function Upload({ route, navigation }) {
       ...prev,
       imgsrc: data.url
     })))
-    console.log(update, 'update');
   }
 
   function updateUrl () {
@@ -77,7 +74,6 @@ export default function Upload({ route, navigation }) {
     .then((response) => {
       response.json()
     })
-    .then(response => console.log(response));
   }
 
   useEffect(()=> {
@@ -87,7 +83,7 @@ export default function Upload({ route, navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && <Image source={{ uri: update.imgsrc }} style={styles.profileimg} />}
+      {user && <Image source={{ uri: user.imgsrc }} style={styles.profileimg} />}
       {update.imgsrc &&
         <Pressable
           title='Continue'
