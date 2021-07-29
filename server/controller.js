@@ -47,7 +47,8 @@ module.exports.updatePic = async (req, res) => {
   try {
     const user = await req.body;
     const update = await UsersModel.findOneAndUpdate({_id: user._id}, {imgsrc: user.imgsrc}, {new: true});
-    console.log('here', update);
+    console.log('user-------------', user);
+    console.log('update-------------------', update);
     res.status(201);
     res.json(update);
   } catch (err) {
