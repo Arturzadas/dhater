@@ -13,7 +13,9 @@ const UsersSchema = new Schema({
   lastName: String,
   step: Number,
   imgsrc: String,
-  disliked: [{id: String}]
+  disliked: [{id: String}],
+  matches: [{id: String}],
+  likedUsers: [{id: String}]
 })
 
 const LikesSchema = new Schema({

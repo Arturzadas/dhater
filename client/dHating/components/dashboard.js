@@ -41,6 +41,8 @@ export default function Upload({ route, navigation }) {
     message: `There's no one left to match`
   })
 
+  const [pressable, setPressable] = useState(true);
+
   const api = 'http://localhost:3080'
 
   let synced;
@@ -124,6 +126,10 @@ export default function Upload({ route, navigation }) {
     setI((el) => el + 1);
   }
 
+  function hidePressable() {
+    setPressable(false);
+  }
+
   //! dashStyle had to be defined here in order to get the width property working correctly
 
   const { width } = Dimensions.get('window');
@@ -138,23 +144,37 @@ export default function Upload({ route, navigation }) {
   return (
     <View style={dashStyle.container}>
       <SwiperFlatList
-        index={0}
-        showPagination
+        index={1}
+        showPagination={false}
         renderAll={true}
       >
         <View style={[dashStyle.child, styles.view]}>
-          <Image source={{ uri: dashUser.imgsrc }} style={styles.dashImg} />
-          <Text style={dashStyle.text}>Hey {dashUser.firstName}, time to start swiping!</Text>
-          {/* <View style={[styles.view, styles.likesContainer]}>
-            {dashUser && <Text>{dashUser.firstName}</Text>}
-          </View> */}
+          <Image
+            source={{ uri: dashUser.imgsrc }}
+            style={styles.dashImg} />
+          <Text
+            style={dashStyle.text}>
+            Hey {dashUser.firstName}, time to start swiping!
+          </Text>
         </View>
         <View style={[dashStyle.child, styles.view]}>
-          <Pressable
-          onPress={()=> displayNextUser()}
-          ><Text>Click here to start</Text></Pressable>
-          {current && <Image source={{uri : current.imgsrc}} style={styles.dashImg}></Image>}
-          {current.message && <Text>{current.message}</Text>}
+          {pressable && <Pressable onPress={() => {
+            displayNextUser();
+            hidePressable();
+          }}
+          >
+            <Text>Click here to start</Text></Pressable>}
+          {current.imgsrc &&
+            <Image
+              source={{ uri: current.imgsrc }}
+              style={styles.dashImg}
+              onPress={() => displayNextUser()}
+
+            ></Image>
+          }
+          {current.message &&
+            <Text>{current.message}</Text>
+          }
         </View>
         <View style={dashStyle.child}>
           <Text style={dashStyle.text}>3rd child</Text>
