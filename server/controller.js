@@ -78,7 +78,8 @@ module.exports.updateLikes = async (req, res) => {
       { $push: { disliked: { id: dislike.user._id } } },
       { new: true }
     );
-    const updateUser = await UsersModel.findOneAndUpdate({ _id: dislike.user._id },
+    const updateUser = await UsersModel.findOneAndUpdate(
+      { _id: dislike.user._id },
       { $push: { disliked: { id: dislike.topic._id } } },
       { new: true }
     );
@@ -140,9 +141,25 @@ module.exports.getPeople = async (req, res) => {
     res.json(response);
   } catch (err) {
     res.status(500);
-    // console.log('Error at controller:    ', err);
+    console.log('Error at controller:    ', err);
   }
 }
+
+module.exports.getAllMatchProfiles = async (req, res) => {
+  try {
+    const userArray = req.body.matches;
+    for (let i = 0; i < userArray.length; i++) {
+      const currentUser = await UsersModel.findOne({_id: userArray[i]});
+      console.log(currentUser, 'current');
+    }
+    res.status(201);
+    res.json();
+  } catch (err) {
+    res.status(500);
+    console.log('Error at controller:    ', err);
+  }
+}
+
 
 module.exports.handleLike = async (req, res) => {
   try {
@@ -160,6 +177,16 @@ module.exports.handleLike = async (req, res) => {
     if (matchBool) {
       res.status(201);
       console.log('ITS A MATCH')
+      const addMatchToUser = await UsersModel.findOneAndUpdate(
+        { _id: request.user },
+        { $push: { matches: newMatchChat } },
+        { new: true }
+      )
+      const addMatchToLiked = await UsersModel.findOneAndUpdate(
+        { _id: request.liked },
+        { $push: { matches: newMatchChat } },
+        { new: true }
+      )
       res.json({
         user: updateUser,
         chat: newMatchChat

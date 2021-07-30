@@ -53,7 +53,7 @@ export default function Upload({ route, navigation }) {
 
   const [i, setI] = useState(0)
 
-  async function fetchUserUpdates() {
+  async function fetchUserUpdates(first) {
     await fetch(`${api}/login`, {
       method: 'POST',
       headers: {
@@ -72,6 +72,9 @@ export default function Upload({ route, navigation }) {
       setDashUser(response[0]);
     })
     .then((e) => {
+
+      getMatchProfiles()
+      if (!first) return;
       // console.log(synced, 'sent body');
       fetch(`${api}/getpeople`, {
         method: 'POST',
@@ -93,10 +96,10 @@ export default function Upload({ route, navigation }) {
   }
 
   useEffect(()=> {
-    fetchUserUpdates();
+    fetchUserUpdates(true);
   }, [])
 
-  async function handleMatching (like) {
+  async function handleMatching(like) {
     if (like) {
       let newMatch;
       // console.log(current._id,'currentid',  dashUser._id, 'dashid')
@@ -110,32 +113,20 @@ export default function Upload({ route, navigation }) {
           user: dashUser._id
         })
       })
-      .then((response) => {
-        return response.json()
-      })
-      .then(response => {
-        if (response) {
-          //congratulations screen lmao you just fake matched someone
-          setMatches({
-            chats : [...matches.chats, response]
-          });
-
-        } else {
-          console.log('no match');
-        }
-      })
-      //check if user liked us
-      if (user.likedback) {
-        // create match
-        // next user
-        // return
-      }
-      //send like to api
-      //next user
-      //return
-    } else {
-      //send api request to blacklist user (not liked) - do this later
-      //next user
+        .then((response) => {
+          return response.json()
+        })
+        .then(response => {
+          if (response) {
+            //congratulations screen lmao you just fake matched someone
+            setMatches({
+              chats: [...matches.chats, response]
+            });
+            fetchUserUpdates(false);
+          } else {
+            console.log('no match');
+          }
+        })
     }
   }
 
@@ -153,6 +144,26 @@ export default function Upload({ route, navigation }) {
     setPressable(false);
   }
 
+  async function getMatchProfiles() {
+    const userArray = [];
+    for (let k of synced.matches) {
+      userArray.push(k.user2);
+    }
+    await fetch(`${api}/getmatchprofiles`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        matches: userArray
+      })
+    })
+      .then((response) => {
+        return response.json()
+      })
+      .then((response) => console.log(response, 'response'))
+  }
+
   //! dashStyle had to be defined here in order to get the width property working correctly
 
   const { width } = Dimensions.get('window');
@@ -162,7 +173,7 @@ export default function Upload({ route, navigation }) {
     text: { fontSize: width * 0.05, textAlign: 'center' },
   });
 
-  console.log(matches, 'matches')
+  console.log(dashUser, 'dashUser')
 
   return (
     <View style={dashStyle.container}>
@@ -172,7 +183,7 @@ export default function Upload({ route, navigation }) {
         renderAll={true}
       >
         {/* first screen */}
-        <View style={[dashStyle.child, styles.view]}> 
+        <View style={[dashStyle.child, styles.view]}>
           <Image
             source={{ uri: dashUser.imgsrc }}
             style={styles.dashImg} />
@@ -214,7 +225,9 @@ export default function Upload({ route, navigation }) {
         {/* third screen */}
         <View style={dashStyle.child}>
           <Text style={dashStyle.text}>3rd child</Text>
-          {matches.chats.length && <Text>There's matches mf!</Text>}
+          {dashUser.matches && dashUser.matches.map(el => (
+            <View key={el._id}><Text>One element here</Text></View>
+          ))}
         </View>
       </SwiperFlatList>
     </View>
