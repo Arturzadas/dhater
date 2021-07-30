@@ -25,10 +25,11 @@ app.all('/*', function(req, res, next) {
 app.post('/register', controller.register);
 app.post('/login', controller.login);
 app.put('/updatepic', controller.updatePic);
-// app.post('/addquestion', controller.addQuestion); //! to add topics, not needed for full application
+app.post('/addquestion', controller.addQuestion); //! to add topics, not needed for full application
 app.get('/topics', controller.getTopics);
 app.put('/updatelike', controller.updateLikes);
 app.put('/updatestep', controller.updateSteps);
+app.post('/getpeople', controller.getPeople);
 
 
 

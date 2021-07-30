@@ -1,9 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
-import { Dimensions, StyleSheet, View, Platform, Pressable, Text } from 'react-native';
+import { Dimensions, StyleSheet, View, Image, Pressable, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-// import styles from '../styles/styles'
+import styles from '../styles/styles'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 
@@ -44,27 +44,26 @@ export default function Upload({ route, navigation }) {
 
   const colors = [dashUser.firstName, dashUser.lastName, 'skyblue'];
 
+  //! dashStyle had to be defined here in order to get the width property working correctly
+
   const { width } = Dimensions.get('window');
-  const styles = StyleSheet.create({
+  const dashStyle = StyleSheet.create({
     container: { flex: 1, backgroundColor: 'white' },
     child: { width, justifyContent: 'center' },
     text: { fontSize: width * 0.1, textAlign: 'center' },
   });
 
   return (
-    // <View style={styles.view}>
-    //   <Image source={{ uri: dashUser.imgsrc }} style={styles.profileimg} />
-    //   <Text>Hey {dashUser.firstName}, time to start swiping!</Text>
-    // </View>
-    <View style={styles.container}>
+    <View style={dashStyle.container}>
       <SwiperFlatList index={0} showPagination>
-        <View style={styles.child}>
-          <Text>1st child</Text>
+        <View style={dashStyle.child}>
+          <Image source={{ uri: dashUser.imgsrc }} style={styles.profileimg} />
+          <Text>Hey {dashUser.firstName}, time to start swiping!</Text>
         </View>
-        <View style={styles.child}>
+        <View style={dashStyle.child}>
           <Text>2nd child</Text>
         </View>
-        <View style={styles.child}>
+        <View style={dashStyle.child}>
           <Text>3rd child</Text>
         </View>
       </SwiperFlatList>
