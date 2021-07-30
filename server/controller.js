@@ -131,6 +131,18 @@ module.exports.getPeople = async (req, res) => {
   }
 }
 
+module.exports.handleLike = async (req, res) => {
+  try {
+    const request = req.body;
+    const updateUser = await UsersModel.findByIdAndUpdate({_id: request.liked}, {$push : {likedUsers : {id: request.user}}}, {new: true});
+    console.log(updateUser, 'updateuser')
+    res.status(201);
+    res.json(updateUser);
+  } catch(err) {
+    res.status(500);
+    console.log('Error at controller: handleLike    ', err);
+  }
+}
 
 //! helper function for asynchronicity
 async function topicFinder (list) {
@@ -162,6 +174,8 @@ async function peopleFinder (list) {
     }
   return users;
 }
+
+
 
 
 const mock = {

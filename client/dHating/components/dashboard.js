@@ -95,12 +95,25 @@ export default function Upload({ route, navigation }) {
     fetchUserUpdates();
   }, [])
 
-  function handleMatching (like) {
-    if (!current) {
-      setCurrent(people.users[1]);
-    }
-
+  async function handleMatching (like) {
     if (like) {
+      console.log(current._id,'currentid',  dashUser._id, 'dashid')
+      await fetch(`${api}/sendlike`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          liked: current._id,
+          user: dashUser._id
+        })
+      })
+      .then((response) => {
+        return response.json()
+      })
+      .then(response => {
+        console.log(response);
+      })
       //check if user liked us
       if (user.likedback) {
         // create match
@@ -165,12 +178,22 @@ export default function Upload({ route, navigation }) {
           >
             <Text>Click here to start</Text></Pressable>}
           {current.imgsrc &&
-            <Image
-              source={{ uri: current.imgsrc }}
-              style={styles.dashImg}
-              onPress={() => displayNextUser()}
+            <View>
 
-            ></Image>
+              <Image
+                source={{ uri: current.imgsrc }}
+                style={styles.dashImg}
+              ></Image>
+              <Pressable
+              onPress={() => {
+                  displayNextUser();
+                  handleMatching(true);
+                }}
+              ><Text>Like</Text></Pressable>
+              <Pressable
+              onPress={() => displayNextUser()}
+              ><Text>Dislike</Text></Pressable>
+            </View>
           }
           {current.message &&
             <Text>{current.message}</Text>
