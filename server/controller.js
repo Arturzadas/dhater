@@ -9,9 +9,9 @@ module.exports.register = async (req, res) => {
     //TODO sessions!
     //TODO sanitize data before input into database!
     const reqUser = req.body;
-    console.log(reqUser);
+    // console.log(reqUser);
     const newUser = await UsersModel.create(reqUser);
-    console.log(newUser)
+    // console.log(newUser)
     res.status(201)
     res.send(newUser);
   } catch (err) {
@@ -27,12 +27,12 @@ module.exports.login = async (req, res) => {
     const loginInfo = await req.body;
     const verify = await UsersModel.find(loginInfo);
     if (verify.length) {
-      console.log(verify, 'verify', loginInfo, 'loginInfo');
+      // console.log(verify, 'verify', loginInfo, 'loginInfo');
       res.status(201)
       res.json(verify);
     } else {
       res.status(500);
-      console.log('wrong credentials');
+      // console.log('wrong credentials');
       res.send('wrong credentials');
     }
   } catch (err) {
@@ -45,8 +45,8 @@ module.exports.updatePic = async (req, res) => {
   try {
     const user = await req.body;
     const update = await UsersModel.findOneAndUpdate({_id: user._id}, {imgsrc: user.imgsrc}, {new: true});
-    console.log('user-------------', user);
-    console.log('update-------------------', update);
+    // console.log('user-------------', user);
+    // console.log('update-------------------', update);
     res.status(201);
     res.json(update);
   } catch (err) {
@@ -60,7 +60,7 @@ module.exports.getTopics = async (req, res) => {
   try {
     const topics = await LikesModel.find();
     res.status(200);
-    console.log(topics);
+    // console.log(topics);
     res.json(topics);
   } catch (err) {
     res.status(500)
@@ -76,7 +76,7 @@ module.exports.updateLikes = async (req, res) => {
     const updateUser = await UsersModel.findByIdAndUpdate({_id: dislike.user._id}, {$push : {disliked: {id: dislike.topic._id}}}, {new: true});
     const response = {user: updateUser, dislike: updateLike};
     res.status(200);
-    console.log(response);
+    // console.log(response);
     res.json(response);
   } catch (err) {
     res.status(500)
@@ -89,7 +89,7 @@ module.exports.updateSteps = async (req, res) => {
     const user = req.body
     const updateUser = await UsersModel.findByIdAndUpdate({_id: user._id}, {step: 1}, {new: true});
     res.status(200);
-    console.log(updateUser);
+    // console.log(updateUser);
     res.json(updateUser);
   } catch (err) {
     res.status(500)
@@ -103,8 +103,8 @@ module.exports.addQuestion = async (req, res) => {
     const question = await req.body;
     const insert = await LikesModel.create(question);
     res.status(201);
-    console.log(question, 'request');
-    console.log(insert, 'response');
+    // console.log(question, 'request');
+    // console.log(insert, 'response');
     res.json(insert);
   } catch(err) {
     res.status(500);
@@ -115,6 +115,11 @@ module.exports.addQuestion = async (req, res) => {
 module.exports.getPeople = async (req, res) => {
   try {
     const likesArray = req.body;
+    console.log(likesArray, 'REQUEST')
+    if (!likesArray.disliked) {
+      res.send('nothing')
+      return
+    }
     const response = await topicFinder(likesArray);
     const newPeople = await peopleFinder(response);
     response.users = newPeople;

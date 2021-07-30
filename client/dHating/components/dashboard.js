@@ -11,11 +11,15 @@ export default function Upload({ route, navigation }) {
 
   const { user } = route.params;
 
-  const [dashUser, setDashUser] = useState({});
+  const [dashUser, setDashUser] = useState({}); //info of user from api, in order to update status and dislikes
 
-  const [people, setPeople] = useState([]);
+  const [people, setPeople] = useState([]); //all the dislikes you have and people with the same dislikes
+  
+  const [dislikes, setDislikes] = useState([]); //current common disliked with each user
 
   const api = 'http://localhost:3080'
+
+  let synced;
 
   async function fetchUserUpdates() {
     await fetch(`${api}/login`, {
@@ -32,11 +36,33 @@ export default function Upload({ route, navigation }) {
       return response.json()
     })
     .then((response) => {
+      synced = response[0];
       setDashUser(response[0]);
+    })
+    .then((e) => {
+
+      console.log(synced, 'sent body');
+      fetch(`${api}/getpeople`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          disliked: synced.disliked
+        })
+      })
+      .then((response) => {
+        return response.json()
+      })
+      .then((response) => {
+        console.log(response, 'response')
+        setPeople(response);
+      })
     })
   }
 
-  console.log(dashUser, 'dashUser');
+  console.log(dashUser.disliked, 'dashUser');
+  console.log(people, 'people')
 
   useEffect(()=> {
     fetchUserUpdates();
