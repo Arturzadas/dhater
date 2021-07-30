@@ -94,6 +94,7 @@ export default function Upload({ route, navigation }) {
 
   async function handleMatching (like) {
     if (like) {
+      let newMatch;
       // console.log(current._id,'currentid',  dashUser._id, 'dashid')
       await fetch(`${api}/sendlike`, {
         method: 'POST',
@@ -109,7 +110,11 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then(response => {
-        console.log(response, 'match response');
+        if (response) {
+          newMatch = response;
+        } else {
+          console.log('no match');
+        }
       })
       //check if user liked us
       if (user.likedback) {
