@@ -68,7 +68,7 @@ export default function Upload({ route, navigation }) {
       setDashUser(response[0]);
     })
     .then((e) => {
-      console.log(synced, 'sent body');
+      // console.log(synced, 'sent body');
       fetch(`${api}/getpeople`, {
         method: 'POST',
         headers: {
@@ -82,14 +82,11 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then((response) => {
-        console.log(response, 'response')
+        // console.log(response, 'response')
         setPeople(response);
       })
     })
   }
-
-  console.log(dashUser.disliked, 'dashUser');
-  console.log(people, 'people')
 
   useEffect(()=> {
     fetchUserUpdates();
@@ -97,7 +94,7 @@ export default function Upload({ route, navigation }) {
 
   async function handleMatching (like) {
     if (like) {
-      console.log(current._id,'currentid',  dashUser._id, 'dashid')
+      // console.log(current._id,'currentid',  dashUser._id, 'dashid')
       await fetch(`${api}/sendlike`, {
         method: 'POST',
         headers: {
@@ -112,7 +109,7 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then(response => {
-        console.log(response);
+        // console.log(response);
       })
       //check if user liked us
       if (user.likedback) {
@@ -134,7 +131,7 @@ export default function Upload({ route, navigation }) {
       setCurrent(noUsers);
       return
     }
-    console.log('here', i)
+    // console.log('here', i)
     setCurrent(people.users[i]);
     setI((el) => el + 1);
   }
@@ -152,7 +149,7 @@ export default function Upload({ route, navigation }) {
     text: { fontSize: width * 0.05, textAlign: 'center' },
   });
 
-  console.log(current, 'current')
+  // console.log(current, 'current')
 
   return (
     <View style={dashStyle.container}>

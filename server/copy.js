@@ -121,7 +121,6 @@ module.exports.getPeople = async (req, res) => {
       return
     }
     const response = await topicFinder(likesArray);
-    console.log(response, 'response!!!!')
     const newPeople = await peopleFinder(response);
     response.users = newPeople;
     res.status(201);
