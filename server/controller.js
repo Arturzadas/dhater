@@ -1,6 +1,6 @@
-const {UsersModel} = require('./models/model');
-const {LikesModel} = require('./models/model');
-const {ChatModel} = require('./models/model');
+const { UsersModel } = require('./models/model');
+const { LikesModel } = require('./models/model');
+const { ChatModel } = require('./models/model');
 
 
 module.exports.register = async (req, res) => {
@@ -45,7 +45,7 @@ module.exports.login = async (req, res) => {
 module.exports.updatePic = async (req, res) => {
   try {
     const user = await req.body;
-    const update = await UsersModel.findOneAndUpdate({_id: user._id}, {imgsrc: user.imgsrc}, {new: true});
+    const update = await UsersModel.findOneAndUpdate({ _id: user._id }, { imgsrc: user.imgsrc }, { new: true });
     // console.log('user-------------', user);
     // console.log('update-------------------', update);
     res.status(201);
@@ -73,9 +73,16 @@ module.exports.getTopics = async (req, res) => {
 module.exports.updateLikes = async (req, res) => {
   try {
     const dislike = req.body
-    const updateLike = await LikesModel.findByIdAndUpdate({_id: dislike.topic._id}, {$push : { disliked: {id :dislike.user._id}}}, {new: true});
-    const updateUser = await UsersModel.findByIdAndUpdate({_id: dislike.user._id}, {$push : {disliked: {id: dislike.topic._id}}}, {new: true});
-    const response = {user: updateUser, dislike: updateLike};
+    const updateLike = await LikesModel.findOneAndUpdate(
+      { _id: dislike.topic._id },
+      { $push: { disliked: { id: dislike.user._id } } },
+      { new: true }
+    );
+    const updateUser = await UsersModel.findOneAndUpdate({ _id: dislike.user._id },
+      { $push: { disliked: { id: dislike.topic._id } } },
+      { new: true }
+    );
+    const response = { user: updateUser, dislike: updateLike };
     res.status(200);
     // console.log(response);
     res.json(response);
@@ -88,7 +95,11 @@ module.exports.updateLikes = async (req, res) => {
 module.exports.updateSteps = async (req, res) => {
   try {
     const user = req.body
-    const updateUser = await UsersModel.findByIdAndUpdate({_id: user._id}, {step: 1}, {new: true});
+    const updateUser = await UsersModel.findOneAndUpdate(
+      { _id: user._id },
+      { step: 1 },
+      { new: true }
+    );
     res.status(200);
     // console.log(updateUser);
     res.json(updateUser);
@@ -107,7 +118,7 @@ module.exports.addQuestion = async (req, res) => {
     // console.log(question, 'request');
     // console.log(insert, 'response');
     res.json(insert);
-  } catch(err) {
+  } catch (err) {
     res.status(500);
     console.log('Error at controller:    ', err);
   }
@@ -127,7 +138,7 @@ module.exports.getPeople = async (req, res) => {
     response.users = newPeople;
     res.status(201);
     res.json(response);
-  } catch(err) {
+  } catch (err) {
     res.status(500);
     // console.log('Error at controller:    ', err);
   }
@@ -137,12 +148,15 @@ module.exports.handleLike = async (req, res) => {
   try {
     const request = req.body;
     // console.log(request);
-    const checkMatch = await UsersModel.findOne({_id: request.liked});
+    const checkMatch = await UsersModel.findOne({ _id: request.liked });
     //helper function to loop through likes
     const isMatch = await checkLikeBack(request.user, request.liked);
-    const updateUser = await UsersModel.findOneAndUpdate({_id: request.liked}, {$push : {likedUsers : {id: request.user}}}, {new: true});
-    // console.log(updateUser, 'updateuser')
-    // const me = await UsersModel.findOne()
+    //TODO check if previously liked
+    const updateUser = await UsersModel.findOneAndUpdate(
+      { _id: request.liked },
+      { $push: { likedUsers: { id: request.user } } },
+      { new: true }
+    );
     if (matchBool) {
       res.status(201);
       console.log('ITS A MATCH')
@@ -150,10 +164,11 @@ module.exports.handleLike = async (req, res) => {
         user: updateUser,
         chat: newMatchChat
       });
+      return
     }
     res.status(201);
     res.json(false);
-  } catch(err) {
+  } catch (err) {
     res.status(500);
     console.log('Error at controller: handleLike    ', err);
   }
@@ -163,8 +178,8 @@ let matchBool = false;
 
 let newMatchChat;
 
-async function checkLikeBack (userId, likedId) {
-  const me = await UsersModel.findOne({_id: userId});
+async function checkLikeBack(userId, likedId) {
+  const me = await UsersModel.findOne({ _id: userId });
   for (let k of me.likedUsers) {
     if (likedId === k.id) {
       //add match to both users and chats database
@@ -174,9 +189,9 @@ async function checkLikeBack (userId, likedId) {
   matchBool = false;
 }
 
-async function createMatch (userId, likedId) {
+async function createMatch(userId, likedId) {
   const newChat = await ChatModel.create({
-    user1 : userId,
+    user1: userId,
     user2: likedId,
     chat: []
   })
@@ -187,34 +202,34 @@ async function createMatch (userId, likedId) {
 }
 
 //! helper function for asynchronicity
-async function topicFinder (list) {
-  const response = {dislikes: [], users: []};
+async function topicFinder(list) {
+  const response = { dislikes: [], users: [] };
 
   for (let el of list.disliked) {
-    const like = await LikesModel.find({_id: el.id});
+    const like = await LikesModel.find({ _id: el.id });
     response.dislikes.push(like[0]);
   }
   return response;
 }
 
-async function peopleFinder (list) {
+async function peopleFinder(list) {
   const users = [];
   // console.log(list, 'list')
 
-    for (let el of list.dislikes) {
-      for (let i of el.disliked) {
-        const oneuser = await UsersModel.findOne({_id: i.id})
-        // console.log(oneuser, 'oneuser!!!!!!!!!!!!!!');
-        const id = oneuser._id;
-        for (let i = 0; i < users.length; i++) {
-          if (users[i]._id.toString() === id.toString()) { //check later so I don't see myself
-            // console.log('found duplicate')
-            users.splice(i, 1);
-          }
+  for (let el of list.dislikes) {
+    for (let i of el.disliked) {
+      const oneuser = await UsersModel.findOne({ _id: i.id })
+      // console.log(oneuser, 'oneuser!!!!!!!!!!!!!!');
+      const id = oneuser._id;
+      for (let i = 0; i < users.length; i++) {
+        if (users[i]._id.toString() === id.toString()) { //check later so I don't see myself
+          // console.log('found duplicate')
+          users.splice(i, 1);
         }
-        users.push(oneuser)
       }
+      users.push(oneuser)
     }
+  }
   return users;
 }
 

@@ -43,6 +43,10 @@ export default function Upload({ route, navigation }) {
 
   const [pressable, setPressable] = useState(true);
 
+  const [matches, setMatches] =useState({
+    chats: []
+  });
+
   const api = 'http://localhost:3080'
 
   let synced;
@@ -111,7 +115,11 @@ export default function Upload({ route, navigation }) {
       })
       .then(response => {
         if (response) {
-          newMatch = response;
+          //congratulations screen lmao you just fake matched someone
+          setMatches({
+            chats : [...matches.chats, response]
+          });
+
         } else {
           console.log('no match');
         }
@@ -154,7 +162,7 @@ export default function Upload({ route, navigation }) {
     text: { fontSize: width * 0.05, textAlign: 'center' },
   });
 
-  // console.log(current, 'current')
+  console.log(matches, 'matches')
 
   return (
     <View style={dashStyle.container}>
@@ -163,7 +171,8 @@ export default function Upload({ route, navigation }) {
         showPagination={false}
         renderAll={true}
       >
-        <View style={[dashStyle.child, styles.view]}>
+        {/* first screen */}
+        <View style={[dashStyle.child, styles.view]}> 
           <Image
             source={{ uri: dashUser.imgsrc }}
             style={styles.dashImg} />
@@ -171,6 +180,7 @@ export default function Upload({ route, navigation }) {
             style={dashStyle.text}>
             Hey {dashUser.firstName}, time to start swiping!
           </Text>
+          {/* second screen */}
         </View>
         <View style={[dashStyle.child, styles.view]}>
           {pressable && <Pressable onPress={() => {
@@ -201,8 +211,10 @@ export default function Upload({ route, navigation }) {
             <Text>{current.message}</Text>
           }
         </View>
+        {/* third screen */}
         <View style={dashStyle.child}>
           <Text style={dashStyle.text}>3rd child</Text>
+          {matches.chats.length && <Text>There's matches mf!</Text>}
         </View>
       </SwiperFlatList>
     </View>

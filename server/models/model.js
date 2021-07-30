@@ -7,15 +7,24 @@ const { Schema } = mongoose;
 
 
 const UsersSchema = new Schema({
+
   email: String,
   password: String,
   firstName: String,
   lastName: String,
   step: Number,
   imgsrc: String,
-  disliked: [{id: String}],
-  matches: [{id: String}],
-  likedUsers: [{id: String}]
+  disliked: [{ id: String }],
+  likedUsers: [{ id: String }],
+  matches: [{
+    user1: String,
+    user2: String,
+    chat: [{
+      content: String,
+      timestamp: String,
+      sender: String,
+    }]
+  }]
 })
 
 const LikesSchema = new Schema({
