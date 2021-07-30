@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#F44336'
   },
-  topicImg : {
+  topicImg: {
     height: 150,
     width: 150,
     borderRadius: 10,
@@ -53,11 +53,31 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#F44336'
   },
-  view : {
+  view: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
+  dashImg: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    height: 150,
+    width: 150,
+    borderRadius: 300,
+    margin: 20,
+    borderWidth: 1,
+    borderColor: '#F44336'
+  },
+  likesContainer: {
+    backgroundColor: '#FCF7ED',
+    height: 'auto',
+    width: '90%',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    flexShrink: 1,
+    borderRadius: 10,
+  }
 });
 
 export default styles;
