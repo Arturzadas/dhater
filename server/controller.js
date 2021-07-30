@@ -116,47 +116,52 @@ module.exports.addQuestion = async (req, res) => {
 module.exports.getPeople = async (req, res) => {
   try {
     const likesArray = req.body;
-    console.log(likesArray, 'REQUEST')
+    // console.log(likesArray, 'REQUEST')
     if (!likesArray.disliked) {
       res.send('nothing')
       return
     }
     const response = await topicFinder(likesArray);
-    console.log(response, 'response!!!!')
+    // console.log(response, 'response!!!!')
     const newPeople = await peopleFinder(response);
     response.users = newPeople;
     res.status(201);
     res.json(response);
   } catch(err) {
     res.status(500);
-    console.log('Error at controller:    ', err);
+    // console.log('Error at controller:    ', err);
   }
 }
 
 module.exports.handleLike = async (req, res) => {
   try {
     const request = req.body;
-    console.log(request);
+    // console.log(request);
     const checkMatch = await UsersModel.findOne({_id: request.liked});
     //helper function to loop through likes
-    const isMatch = checkLikeBack(request.user, request.liked);
-    const updateUser = await UsersModel.findByIdAndUpdate({_id: request.liked}, {$push : {likedUsers : {id: request.user}}}, {new: true});
+    const isMatch = await checkLikeBack(request.user, request.liked);
+    const updateUser = await UsersModel.findOneAndUpdate({_id: request.liked}, {$push : {likedUsers : {id: request.user}}}, {new: true});
     // console.log(updateUser, 'updateuser')
     // const me = await UsersModel.findOne()
-
-    // if (isMatch) {
-    //   res.status(201);
-    //   res.json({
-    //     user1: 'something'
-    //   })
-    // }
+    if (matchBool) {
+      res.status(201);
+      console.log('ITS A MATCH')
+      res.json({
+        user: updateUser,
+        chat: newMatchChat
+      });
+    }
     res.status(201);
-    res.json(updateUser);
+    res.json(false);
   } catch(err) {
     res.status(500);
     console.log('Error at controller: handleLike    ', err);
   }
 }
+
+let matchBool = false;
+
+let newMatchChat;
 
 async function checkLikeBack (userId, likedId) {
   const me = await UsersModel.findOne({_id: userId});
@@ -166,6 +171,7 @@ async function checkLikeBack (userId, likedId) {
       return createMatch(userId, likedId);
     }
   }
+  matchBool = false;
 }
 
 async function createMatch (userId, likedId) {
@@ -174,9 +180,10 @@ async function createMatch (userId, likedId) {
     user2: likedId,
     chat: []
   })
-  console.log(newChat);
-  return true;
 
+  newMatchChat = newChat;
+  // console.log(newChat);
+  matchBool = true;
 }
 
 //! helper function for asynchronicity
@@ -197,11 +204,11 @@ async function peopleFinder (list) {
     for (let el of list.dislikes) {
       for (let i of el.disliked) {
         const oneuser = await UsersModel.findOne({_id: i.id})
-        console.log(oneuser, 'oneuser!!!!!!!!!!!!!!');
+        // console.log(oneuser, 'oneuser!!!!!!!!!!!!!!');
         const id = oneuser._id;
         for (let i = 0; i < users.length; i++) {
-          if (users[i]._id.toString() === id.toString()) {
-            console.log('found duplicate')
+          if (users[i]._id.toString() === id.toString()) { //check later so I don't see myself
+            // console.log('found duplicate')
             users.splice(i, 1);
           }
         }

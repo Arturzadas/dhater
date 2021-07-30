@@ -109,7 +109,7 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then(response => {
-        // console.log(response);
+        console.log(response, 'match response');
       })
       //check if user liked us
       if (user.likedback) {
