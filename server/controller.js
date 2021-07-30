@@ -1,5 +1,6 @@
 const {UsersModel} = require('./models/model');
 const {LikesModel} = require('./models/model');
+const {ChatModel} = require('./models/model');
 
 
 module.exports.register = async (req, res) => {
@@ -135,12 +136,20 @@ module.exports.getPeople = async (req, res) => {
 module.exports.handleLike = async (req, res) => {
   try {
     const request = req.body;
+    console.log(request);
     const checkMatch = await UsersModel.findOne({_id: request.liked});
     //helper function to loop through likes
-    checkLikeBack(request.user, request.liked);
-
+    const isMatch = checkLikeBack(request.user, request.liked);
     const updateUser = await UsersModel.findByIdAndUpdate({_id: request.liked}, {$push : {likedUsers : {id: request.user}}}, {new: true});
     // console.log(updateUser, 'updateuser')
+    // const me = await UsersModel.findOne()
+
+    // if (isMatch) {
+    //   res.status(201);
+    //   res.json({
+    //     user1: 'something'
+    //   })
+    // }
     res.status(201);
     res.json(updateUser);
   } catch(err) {
@@ -153,11 +162,22 @@ async function checkLikeBack (userId, likedId) {
   const me = await UsersModel.findOne({_id: userId});
   for (let k of me.likedUsers) {
     if (likedId === k.id) {
-      console.log('MATCH!!!');
+      //add match to both users and chats database
+      return createMatch(userId, likedId);
     }
   }
 }
 
+async function createMatch (userId, likedId) {
+  const newChat = await ChatModel.create({
+    user1 : userId,
+    user2: likedId,
+    chat: []
+  })
+  console.log(newChat);
+  return true;
+
+}
 
 //! helper function for asynchronicity
 async function topicFinder (list) {

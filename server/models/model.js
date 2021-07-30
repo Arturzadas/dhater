@@ -25,9 +25,21 @@ const LikesSchema = new Schema({
   disliked: [{id: String}]
 })
 
+const ChatSchema = new Schema({
+  user1: String,
+  user2: String,
+  chat: [{
+    content: String,
+    timestamp: String,
+    sender: String,
+  }]
+})
+
 
 const LikesModel = mongoose.model('LikesModel', LikesSchema);
 
 const UsersModel = mongoose.model('UsersModel', UsersSchema);
 
-module.exports = {UsersModel:UsersModel, LikesModel:LikesModel};
+const ChatModel = mongoose.model('ChatModel', ChatSchema);
+
+module.exports = {UsersModel:UsersModel, LikesModel:LikesModel, ChatModel: ChatModel};
