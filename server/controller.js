@@ -84,6 +84,20 @@ module.exports.updateLikes = async (req, res) => {
   }
 }
 
+module.exports.updateSteps = async (req, res) => {
+  try {
+    const user = req.body
+    const updateUser = await UsersModel.findByIdAndUpdate({_id: user._id}, {step: 1}, {new: true});
+    res.status(200);
+    console.log(updateUser);
+    res.json(updateUser);
+  } catch (err) {
+    res.status(500)
+    console.log('Error at controller:    ', err)
+  }
+}
+
+
 // module.exports.addQuestion = async (req, res) => {
 //   try {
 //     const question = await req.body;

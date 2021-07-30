@@ -16,8 +16,6 @@ export default function Upload({ route, navigation }) {
 
   const [i, setI] = useState(1);
 
-  const id = nextUser._id;
-
   const api = 'http://localhost:3080'
 
   function getQuestions () {
@@ -65,19 +63,25 @@ export default function Upload({ route, navigation }) {
           topic: currentTopic
         })
       })
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data);
-      })
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          console.log(data);
+        })
       await setI((i) => i + 1);
       setCurrentTopic(topics[i])
     }
     if (i === topics.length) {
       console.log('limit');
-      //navigate to dashboard
-      navigation.navigate('Dashboard', {user: nextUser});
+      fetch(`${api}/updatestep`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(nextUser)
+      })
+      navigation.navigate('Dashboard', { user: nextUser });
     }
   }
 
@@ -88,6 +92,7 @@ export default function Upload({ route, navigation }) {
       {currentTopic &&
         <View>
           <Text>{currentTopic.topic}</Text>
+          <Image source={{ uri: currentTopic.imgsrc }} style={styles.topicImg} />
           <Text>Disliked by (number)</Text>
           <Pressable
           onPress={() => displayNextTopic(true)}

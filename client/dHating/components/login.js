@@ -41,7 +41,13 @@ function Login ({ navigation }) {
     })
     .then((response) => {
       setLoginStatus(response);
-      navigation.navigate('Upload', {user: response[0]});
+      console.log(response, 'here----------------------------------');
+      if(response[0].step === 1) {
+        console.log('ifstatement entered')
+        navigation.navigate('Dashboard', {user: response[0]});
+      } else {
+        navigation.navigate('Upload', {user: response[0]});
+      }
     })
   }
 

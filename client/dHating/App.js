@@ -22,11 +22,31 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Upload" component={Upload} />
-        <Stack.Screen name="Q1" component={Q1} />
-        <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={navOptions}
+        />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={navOptions}
+        />
+        <Stack.Screen
+          name="Upload"
+          component={Upload}
+          options={navOptions}
+        />
+        <Stack.Screen
+          name="Q1"
+          component={Q1}
+          options={noBackBtn}
+        />
+        <Stack.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={noBackBtn}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -40,3 +60,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+const noBackBtn = {
+  headerLeft: () => {
+    return null;
+  },
+  headerStyle: {backgroundColor: '#f4511e'},
+  headerTintColor: '#fff',
+  headerTitleStyle: {fontWeight: 'bold', alignSelf: 'center'},
+}
+
+const navOptions = {
+  headerStyle: {backgroundColor: '#f4511e'},
+  headerTintColor: '#fff',
+  headerTitleStyle: {fontWeight: 'bold', alignSelf: 'center'},
+}

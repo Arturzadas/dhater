@@ -83,7 +83,7 @@ export default function Upload({ route, navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {user && <Image source={{ uri: user.imgsrc }} style={styles.profileimg} />}
+      <Image source={{ uri: update.imgsrc }} style={styles.profileimg} />
       {update.imgsrc &&
         <Pressable
           title='Continue'

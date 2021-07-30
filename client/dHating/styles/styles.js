@@ -44,6 +44,19 @@ const styles = StyleSheet.create({
     margin: 20,
     borderWidth: 1,
     borderColor: '#F44336'
+  },
+  topicImg : {
+    height: 150,
+    width: 150,
+    borderRadius: 10,
+    margin: 20,
+    borderWidth: 1,
+    borderColor: '#F44336'
+  },
+  view : {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
