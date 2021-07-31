@@ -4,11 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 // import Upload from './upload';
 
-function Chat ({ navigation }) {
+function Chat ({ navigation, route }) {
 
   const { user } = route.params;
+  const { matched } = route.params;
+  const { chat } = route.params;
 
-
+  console.log(user, matched, chat)
 
 
 

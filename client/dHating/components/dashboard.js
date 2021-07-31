@@ -189,6 +189,18 @@ export default function Upload({ route, navigation }) {
       })
   }
 
+  async function openChat(id1, matchedUser) {
+    let correctMatch;
+
+    for (let k of matches) {
+      if (id1 === k.user1 || id1 === k.user2) {
+        correctMatch = k;
+      }
+    }
+
+    navigation.navigate('Chat', {user: dashUser, matched: matchedUser, chat: correctMatch});
+  }
+
 
 
   //! dashStyle had to be defined here in order to get the width property working correctly
@@ -256,7 +268,7 @@ export default function Upload({ route, navigation }) {
             <View key={el._id}>
               <Pressable
                 onPress={() => {
-                  navigation.navigate('Chat', { user: dashUser })
+                  openChat(el._id, el);
                 }}
               >
 
