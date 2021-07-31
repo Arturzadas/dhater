@@ -77,7 +77,54 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexShrink: 1,
     borderRadius: 10,
-  }
+  },
+  matchedUser : {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  matchImg: {
+    height: 150,
+    width: 150,
+    borderRadius: 300,
+    margin: 20,
+    borderWidth: 1,
+    borderColor: '#F44336'
+  },
+  messageInput : {
+    height: 40,
+    width: 280,
+    margin: 12,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    bottom: 1,
+    left : 1,
+  },
+  chatContainer : {
+    flex: 1,
+    justifyContent: 'flex-end'
+  },
+  messageInputContainer : {
+    flexDirection:'row',
+    flexWrap:'wrap'
+  },
+  sendBtn: {
+    margin: 2,
+    height: 40,
+    width: 50,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    color: 'white',
+    bottom: 1,
+    left : 1,
+  },
+  sendText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 9,
+  },
 });
 
 export default styles;

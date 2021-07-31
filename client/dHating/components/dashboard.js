@@ -111,7 +111,7 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then((response) => {
-        console.log(response, 'matches')
+        // console.log(response, 'matches')
         setMatches(response);
       })
   }
@@ -212,7 +212,7 @@ export default function Upload({ route, navigation }) {
     text: { fontSize: width * 0.05, textAlign: 'center' },
   });
 
-  console.log(dashUser, 'dashUser')
+  // console.log(dashUser, 'dashUser')
   // console.log(matches, 'matches')
 
   return (
@@ -265,7 +265,10 @@ export default function Upload({ route, navigation }) {
         {/* third screen */}
         <View style={dashStyle.child}>
           {matchProfiles.profiles && matchProfiles.profiles.map(el => (
-            <View key={el._id}>
+            <View
+            key={el._id}
+            style={styles.matchedUser}
+            >
               <Pressable
                 onPress={() => {
                   openChat(el._id, el);
@@ -274,13 +277,12 @@ export default function Upload({ route, navigation }) {
 
                 <Image
                   source={{ uri: el.imgsrc }}
-                  style={styles.dashImg}
+                  style={styles.matchImg}
 
                 >
 
                 </Image>
                 <Text
-                  style={dashStyle.text}
                 >{el.firstName} {el.lastName}
                 </Text>
               </Pressable>
