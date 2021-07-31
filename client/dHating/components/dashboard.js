@@ -14,7 +14,7 @@ export default function Upload({ route, navigation }) {
   const [dashUser, setDashUser] = useState({}); //info of user from api, in order to update status and dislikes
 
   const [people, setPeople] = useState([]); //all the dislikes you have and people with the same dislikes
-  
+
   const [current, setCurrent] = useState({}); //current displayed user to match
 
   const [noUsers, setNoUsers] = useState({
@@ -41,7 +41,7 @@ export default function Upload({ route, navigation }) {
 
   const [pressable, setPressable] = useState(true);
 
-  const [matches, setMatches] =useState({
+  const [matches, setMatches] = useState({
     chats: []
   });
 
@@ -66,38 +66,57 @@ export default function Upload({ route, navigation }) {
         password: user.password,
       })
     })
-    .then((response) => {
-      return response.json()
-    })
-    .then((response) => {
-      synced = response[0];
-      setDashUser(response[0]);
-    })
-    .then((e) => {
-
-      getMatchProfiles()
-      if (!first) return;
-      // console.log(synced, 'sent body');
-      fetch(`${api}/getpeople`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          disliked: synced.disliked
-        })
-      })
       .then((response) => {
         return response.json()
       })
       .then((response) => {
-        // console.log(response, 'response')
-        setPeople(response);
+        synced = response[0];
+        setDashUser(response[0]);
       })
-    })
+      .then((e) => {
+        getMatchChats()
+        getMatchProfiles()
+        if (!first) return;
+        // console.log(synced, 'sent body');
+        fetch(`${api}/getpeople`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            disliked: synced.disliked
+          })
+        })
+          .then((response) => {
+            return response.json()
+          })
+          .then((response) => {
+            // console.log(response, 'response')
+            setPeople(response);
+          })
+      })
   }
 
-  useEffect(()=> {
+  async function getMatchChats() {
+    fetch(`${api}/getchats`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: synced._id
+      })
+    })
+      .then((response) => {
+        return response.json()
+      })
+      .then((response) => {
+        console.log(response, 'matches')
+        setMatches(response);
+      })
+  }
+
+  useEffect(() => {
     fetchUserUpdates(true);
   }, [])
 
@@ -121,9 +140,9 @@ export default function Upload({ route, navigation }) {
         .then(response => {
           if (response) {
             //congratulations screen lmao you just fake matched someone
-            setMatches({
-              chats: [...matches.chats, response]
-            });
+            // setMatches({
+            //   chats: [...matches.chats, response]
+            // });
             fetchUserUpdates(false);
           } else {
             console.log('no match');
@@ -165,28 +184,24 @@ export default function Upload({ route, navigation }) {
       })
       .then((response) => {
         setMatchProfiles({
-          profiles: [...matchProfiles.profiles, ...response]
+          profiles: [...response]
         });
       })
-      // const matchProfileArray = [];
-      // if (matchProfiles.profiles.length) {
-      //   for (let k of matchProfiles.profiles) {
-      //     matchProfileArray.push(k)
-      //   }
-      // }
   }
+
+
 
   //! dashStyle had to be defined here in order to get the width property working correctly
 
   const { width } = Dimensions.get('window');
   const dashStyle = StyleSheet.create({
-    container: { flex: 1, backgroundColor: 'white', alignContent: 'center', justifyContent: 'center'},
-    child: { width, justifyContent: 'center'},
+    container: { flex: 1, backgroundColor: 'white', alignContent: 'center', justifyContent: 'center' },
+    child: { width, justifyContent: 'center' },
     text: { fontSize: width * 0.05, textAlign: 'center' },
   });
 
   console.log(dashUser, 'dashUser')
-  console.log(matchProfiles, 'matchprofiles')
+  // console.log(matches, 'matches')
 
   return (
     <View style={dashStyle.container}>
@@ -221,13 +236,13 @@ export default function Upload({ route, navigation }) {
                 style={styles.dashImg}
               ></Image>
               <Pressable
-              onPress={() => {
+                onPress={() => {
                   displayNextUser();
                   handleMatching(true);
                 }}
               ><Text>Like</Text></Pressable>
               <Pressable
-              onPress={() => displayNextUser()}
+                onPress={() => displayNextUser()}
               ><Text>Dislike</Text></Pressable>
             </View>
           }
@@ -239,15 +254,27 @@ export default function Upload({ route, navigation }) {
         <View style={dashStyle.child}>
           {matchProfiles.profiles && matchProfiles.profiles.map(el => (
             <View key={el._id}>
-              <Image
-              source={{ uri: el.imgsrc }}
-              style={styles.dashImg}>
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('Chat', { user: dashUser })
+                }}
+              >
 
-              </Image>
-              <Text
-              style={dashStyle.text}
-              >{el.firstName} {el.lastName}</Text></View>
+                <Image
+                  source={{ uri: el.imgsrc }}
+                  style={styles.dashImg}
+
+                >
+
+                </Image>
+                <Text
+                  style={dashStyle.text}
+                >{el.firstName} {el.lastName}
+                </Text>
+              </Pressable>
+            </View>
           ))}
+
         </View>
       </SwiperFlatList>
     </View>

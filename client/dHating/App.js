@@ -7,6 +7,7 @@ import Register from './components/register';
 import Upload from './components/upload';
 import Q1 from './components/Q1';
 import Dashboard from './components/dashboard';
+import Chat from './components/chat';
 
 
 export default function App() {
@@ -46,6 +47,11 @@ export default function App() {
           name="Dashboard"
           component={Dashboard}
           options={noBackBtn}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={navOptions}
         />
       </Stack.Navigator>
     </NavigationContainer>
