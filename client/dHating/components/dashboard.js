@@ -71,11 +71,10 @@ export default function Upload({ route, navigation }) {
       })
       .then((response) => {
         synced = response[0];
-        setDashUser(response[0]);
+        setDashUser(response[0], getMatchProfiles());
       })
       .then((e) => {
         getMatchChats()
-        getMatchProfiles()
         if (!first) return;
         // console.log(synced, 'sent body');
         fetch(`${api}/getpeople`, {
@@ -165,24 +164,32 @@ export default function Upload({ route, navigation }) {
     setPressable(false);
   }
 
+  console.log(dashUser, 'dashUser')
   async function getMatchProfiles() {
     const userArray = [];
     for (let k of synced.matches) {
-      userArray.push(k.user2);
+      if (k.user2 === synced._id) {
+        userArray.push(k.user1);
+      } else {
+        userArray.push(k.user2);
+      }
     }
+    console.log(userArray, 'userArray')
     await fetch(`${api}/getmatchprofiles`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        matches: userArray
+        matches: userArray,
+        user: dashUser._id
       })
     })
       .then((response) => {
         return response.json()
       })
       .then((response) => {
+        console.log(response, 'response');
         setMatchProfiles({
           profiles: [...response]
         });

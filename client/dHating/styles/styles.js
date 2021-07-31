@@ -125,6 +125,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 9,
   },
+  myMessage : {
+    backgroundColor: 'black'
+  }
 });
 
 export default styles;
