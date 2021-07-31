@@ -159,6 +159,7 @@ export default function Upload({ route, navigation }) {
       })
     })
       .then((response) => {
+        console.log(response, 'response')
         return response.json()
       })
       .then((response) => console.log(response, 'response'))
