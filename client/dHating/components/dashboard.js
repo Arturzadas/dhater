@@ -15,8 +15,6 @@ export default function Upload({ route, navigation }) {
 
   const [people, setPeople] = useState([]); //all the dislikes you have and people with the same dislikes
   
-  const [dislikes, setDislikes] = useState([]); //current common disliked with each user
-  
   const [current, setCurrent] = useState({}); //current displayed user to match
 
   const [noUsers, setNoUsers] = useState({
@@ -46,6 +44,10 @@ export default function Upload({ route, navigation }) {
   const [matches, setMatches] =useState({
     chats: []
   });
+
+  const [matchProfiles, setMatchProfiles] = useState({
+    profiles: []
+  })
 
   const api = 'http://localhost:3080'
 
@@ -159,10 +161,19 @@ export default function Upload({ route, navigation }) {
       })
     })
       .then((response) => {
-        console.log(response, 'response')
         return response.json()
       })
-      .then((response) => console.log(response, 'response'))
+      .then((response) => {
+        setMatchProfiles({
+          profiles: [...matchProfiles.profiles, ...response]
+        });
+      })
+      // const matchProfileArray = [];
+      // if (matchProfiles.profiles.length) {
+      //   for (let k of matchProfiles.profiles) {
+      //     matchProfileArray.push(k)
+      //   }
+      // }
   }
 
   //! dashStyle had to be defined here in order to get the width property working correctly
@@ -175,6 +186,7 @@ export default function Upload({ route, navigation }) {
   });
 
   console.log(dashUser, 'dashUser')
+  console.log(matchProfiles, 'matchprofiles')
 
   return (
     <View style={dashStyle.container}>
@@ -225,9 +237,16 @@ export default function Upload({ route, navigation }) {
         </View>
         {/* third screen */}
         <View style={dashStyle.child}>
-          <Text style={dashStyle.text}>3rd child</Text>
-          {dashUser.matches && dashUser.matches.map(el => (
-            <View key={el._id}><Text>One element here</Text></View>
+          {matchProfiles.profiles && matchProfiles.profiles.map(el => (
+            <View key={el._id}>
+              <Image
+              source={{ uri: el.imgsrc }}
+              style={styles.dashImg}>
+
+              </Image>
+              <Text
+              style={dashStyle.text}
+              >{el.firstName} {el.lastName}</Text></View>
           ))}
         </View>
       </SwiperFlatList>
