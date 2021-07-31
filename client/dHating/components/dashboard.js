@@ -84,13 +84,15 @@ export default function Upload({ route, navigation }) {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            disliked: synced.disliked
+            disliked: synced.disliked,
+            id: synced._id
           })
         })
           .then((response) => {
             return response.json()
           })
           .then((response) => {
+            console.log(response)
             setPeople(response);
           })
       })
@@ -143,21 +145,20 @@ export default function Upload({ route, navigation }) {
     }
   }
 
-
   function displayNextUser() {
-    if (i === people.users.length - 1) {
+    if (i === people.users.length && i !== 0) {
       setCurrent(noUsers);
       return
     }
     let dislikes = [];
-
+    
     for (let i = 0; i < current.disliked.length; i++) {
       for (let k = 0; k < dashUser.disliked.length; k++) {
-        if (current.disliked[i].id === dashUser.disliked[i].id) {
-          if (!dislikes.includes(current.disliked[i].id)) {
-            dislikes.push(current.disliked[i].id);
-          } else {
+        if (current.disliked[i].id === dashUser.disliked[k].id) {
+          if (dislikes.includes(current.disliked[i].id)) {
             console.log('duplicate');
+          } else {
+            dislikes.push(current.disliked[i].id);
           }
         }
       }
@@ -175,8 +176,8 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then(response=> {
-        setCommonDislikes(response);
         console.log(response, 'common dislikes');
+        setCommonDislikes(response);
       })
     setCurrent(people.users[i]);
     setI((el) => el + 1);
