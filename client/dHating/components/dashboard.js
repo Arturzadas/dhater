@@ -92,7 +92,6 @@ export default function Upload({ route, navigation }) {
             return response.json()
           })
           .then((response) => {
-            console.log(response)
             setPeople(response);
           })
       })
@@ -145,20 +144,20 @@ export default function Upload({ route, navigation }) {
     }
   }
 
-  function displayNextUser() {
-    if (i === people.users.length && i !== 0) {
+  async function displayNextUser() {
+    if (i === people.users.length) {
       setCurrent(noUsers);
       return
     }
     let dislikes = [];
     
-    for (let i = 0; i < current.disliked.length; i++) {
+    for (let j = 0; j < current.disliked.length; j++) {
       for (let k = 0; k < dashUser.disliked.length; k++) {
-        if (current.disliked[i].id === dashUser.disliked[k].id) {
-          if (dislikes.includes(current.disliked[i].id)) {
+        if (current.disliked[j].id === dashUser.disliked[k].id) {
+          if (dislikes.includes(current.disliked[j].id)) {
             console.log('duplicate');
           } else {
-            dislikes.push(current.disliked[i].id);
+            dislikes.push(current.disliked[j].id);
           }
         }
       }
@@ -176,26 +175,32 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then(response=> {
-        console.log(response, 'common dislikes');
-        setCommonDislikes(response);
+        console.log(response, 'commonlikes')
+        syncedCommon = response;
       })
-    setCurrent(people.users[i]);
-    setI((el) => el + 1);
-  }
-
-  function hidePressable() {
-    setPressable(false);
-  }
-
-  async function getMatchProfiles() {
-    const userArray = [];
-    for (let k of synced.matches) {
-      if (k.user2 === synced._id) {
-        userArray.push(k.user1);
-      } else {
-        userArray.push(k.user2);
-      }
+      setCommonDislikes(syncedCommon);
+      setCurrent(people.users[i]);
+      setI((el) => el + 1);
     }
+
+    let syncedCommon;
+
+    console.log(current)
+    console.log(syncedCommon, 'common')
+    
+    function hidePressable() {
+      setPressable(false);
+    }
+    
+    async function getMatchProfiles() {
+      const userArray = [];
+      for (let k of synced.matches) {
+        if (k.user2 === synced._id) {
+          userArray.push(k.user1);
+        } else {
+          userArray.push(k.user2);
+        }
+      }
     await fetch(`${api}/getmatchprofiles`, {
       method: 'POST',
       headers: {
@@ -244,7 +249,7 @@ export default function Upload({ route, navigation }) {
   return (
     <View style={dashStyle.container}>
       <SwiperFlatList
-        index={2}
+        index={1}
         showPagination={false}
         renderAll={true}
       >
@@ -268,7 +273,6 @@ export default function Upload({ route, navigation }) {
             <Text>Click here to start</Text></Pressable>}
           {current.imgsrc &&
             <View>
-
               <Image
                 source={{ uri: current.imgsrc }}
                 style={styles.dashImg}
@@ -278,7 +282,8 @@ export default function Upload({ route, navigation }) {
                   displayNextUser();
                   handleMatching(true);
                 }}
-              ><Text>Like</Text></Pressable>
+                ><Text>Like</Text></Pressable>
+                {commonDislikes && <Text>{commonDislikes[0].topic}</Text>}
               <Pressable
                 onPress={() => displayNextUser()}
               ><Text>Dislike</Text></Pressable>
