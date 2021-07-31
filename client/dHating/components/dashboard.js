@@ -218,7 +218,7 @@ export default function Upload({ route, navigation }) {
   return (
     <View style={dashStyle.container}>
       <SwiperFlatList
-        index={1}
+        index={2}
         showPagination={false}
         renderAll={true}
       >

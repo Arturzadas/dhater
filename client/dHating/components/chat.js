@@ -11,40 +11,73 @@ function Chat ({ navigation, route }) {
   const { matched } = route.params;
   const { chat } = route.params;
 
+  const api = 'http://localhost:3080'
+
+  const [currentChat, setCurrentChat] = useState(null)
 
   const [currentMessage, setCurrentMessage] = useState('');
-  // console.log(user, matched, chat)
 
   const handleChange = (value) => {
     setCurrentMessage(value);
   };
 
-  console.log(currentMessage);
+  const handleChat = () => {
+    setCurrentChat(chat);
+  }
+
+  useEffect(()=> {
+    handleChat()
+  }, [])
+
+  const handleSubmit = async (sentMessage) => {
+
+    if (sentMessage === '') return
+    fetch(`${api}/postmessage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id : currentChat._id,
+        content: sentMessage,
+        timestamp: Date.now().toString(),
+        sender: user._id
+      })
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      console.log(response)
+      setCurrentChat(response)
+    })
+  }
 
 
   return (
     <View
-    style={styles.chatContainer}
+      style={styles.chatContainer}
     >
       <View>
-      <Text>Chat here!</Text>
+        <Text>Chat here!</Text>
       </View>
       <View
-      style={styles.messageInputContainer}
+        style={styles.messageInputContainer}
       >
         <TextInput
-        style={styles.messageInput}
-        name="message"
-        value={currentMessage}
-        onChangeText={(text) => handleChange(text)}
+          style={styles.messageInput}
+          name="message"
+          value={currentMessage}
+          onChangeText={(text) => handleChange(text)}
         ></TextInput>
-        <Pressable 
-        style={styles.sendBtn}
-        onPress={()=> handleChange('')}
+        <Pressable
+          style={styles.sendBtn}
+          onPress={() => {
+            handleSubmit(currentMessage)
+            handleChange('');
+          }}
         >
-        <Text
-        style={styles.sendText}
-        >Send</Text></Pressable>
+          <Text style={styles.sendText}>Send</Text></Pressable>
       </View>
     </View>
   )
