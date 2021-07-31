@@ -62,11 +62,11 @@ function Chat ({ navigation, route }) {
         {currentChat && currentChat.chat.map((el) => {
           if (el.sender === user._id) {
             return (
-              <View><Text style={styles.myMessage}>{el.content}</Text></View>
+              <View key={el._id}><Text style={styles.myMessage}>{el.content}</Text></View>
             )
           } else {
             return (
-              <View><Text>{el.content}</Text></View>
+              <View key={el._id}><Text>{el.content}</Text></View>
             )
           }
         })}
