@@ -34,7 +34,7 @@ export default function Upload({ route, navigation }) {
     })
   }
 
-  console.log(currentTopic, 'current');
+  // console.log(currentTopic, 'current');
 
   async function bundler () {
     await getQuestions();
@@ -48,11 +48,11 @@ export default function Upload({ route, navigation }) {
   async function displayNextTopic(like) {
     if (like) {
       //go to next topic
-      console.log(i)
+      // console.log(i)
       await setI((i) => i + 1);
       setCurrentTopic(topics[i])
     } else {
-      console.log('notliked')
+      // console.log('notliked')
       fetch(`${api}/updatelike`, {
         method: 'PUT',
         headers: {
@@ -67,13 +67,13 @@ export default function Upload({ route, navigation }) {
           return response.json()
         })
         .then((data) => {
-          console.log(data);
+          // console.log(data);
         })
       await setI((i) => i + 1);
       setCurrentTopic(topics[i])
     }
     if (i === topics.length) {
-      console.log('limit');
+      // console.log('limit');
       fetch(`${api}/updatestep`, {
         method: 'PUT',
         headers: {

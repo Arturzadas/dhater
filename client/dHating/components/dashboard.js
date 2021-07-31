@@ -15,7 +15,7 @@ export default function Upload({ route, navigation }) {
 
   const [people, setPeople] = useState([]); //all the dislikes you have and people with the same dislikes
 
-  const [current, setCurrent] = useState({}); //current displayed user to match
+  const [current, setCurrent] = useState({disliked: []}); //current displayed user to match
 
   const [noUsers, setNoUsers] = useState({
     _id: "6103cf811c02c605c66cd400",
@@ -49,6 +49,8 @@ export default function Upload({ route, navigation }) {
     profiles: []
   })
 
+  const [commonDislikes, setCommonDislikes] = useState(null);
+
   const api = 'http://localhost:3080'
 
   let synced;
@@ -76,7 +78,6 @@ export default function Upload({ route, navigation }) {
       .then((e) => {
         getMatchChats()
         if (!first) return;
-        // console.log(synced, 'sent body');
         fetch(`${api}/getpeople`, {
           method: 'POST',
           headers: {
@@ -90,7 +91,6 @@ export default function Upload({ route, navigation }) {
             return response.json()
           })
           .then((response) => {
-            // console.log(response, 'response')
             setPeople(response);
           })
       })
@@ -110,7 +110,6 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then((response) => {
-        // console.log(response, 'matches')
         setMatches(response);
       })
   }
@@ -122,7 +121,6 @@ export default function Upload({ route, navigation }) {
   async function handleMatching(like) {
     if (like) {
       let newMatch;
-      // console.log(current._id,'currentid',  dashUser._id, 'dashid')
       await fetch(`${api}/sendlike`, {
         method: 'POST',
         headers: {
@@ -138,24 +136,48 @@ export default function Upload({ route, navigation }) {
         })
         .then(response => {
           if (response) {
-            //congratulations screen lmao you just fake matched someone
-            // setMatches({
-            //   chats: [...matches.chats, response]
-            // });
             fetchUserUpdates(false);
           } else {
-            console.log('no match');
           }
         })
     }
   }
 
+
   function displayNextUser() {
-    if (i === people.users.length) {
+    if (i === people.users.length - 1) {
       setCurrent(noUsers);
       return
     }
-    // console.log('here', i)
+    let dislikes = [];
+
+    for (let i = 0; i < current.disliked.length; i++) {
+      for (let k = 0; k < dashUser.disliked.length; k++) {
+        if (current.disliked[i].id === dashUser.disliked[i].id) {
+          if (!dislikes.includes(current.disliked[i].id)) {
+            dislikes.push(current.disliked[i].id);
+          } else {
+            console.log('duplicate');
+          }
+        }
+      }
+    }
+    fetch(`${api}/getdislikes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        dislike: dislikes
+      })
+    })
+      .then((response) => {
+        return response.json()
+      })
+      .then(response=> {
+        setCommonDislikes(response);
+        console.log(response, 'common dislikes');
+      })
     setCurrent(people.users[i]);
     setI((el) => el + 1);
   }
@@ -164,7 +186,6 @@ export default function Upload({ route, navigation }) {
     setPressable(false);
   }
 
-  console.log(dashUser, 'dashUser')
   async function getMatchProfiles() {
     const userArray = [];
     for (let k of synced.matches) {
@@ -174,7 +195,6 @@ export default function Upload({ route, navigation }) {
         userArray.push(k.user2);
       }
     }
-    console.log(userArray, 'userArray')
     await fetch(`${api}/getmatchprofiles`, {
       method: 'POST',
       headers: {
@@ -189,7 +209,6 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then((response) => {
-        console.log(response, 'response');
         setMatchProfiles({
           profiles: [...response]
         });
@@ -219,8 +238,7 @@ export default function Upload({ route, navigation }) {
     text: { fontSize: width * 0.05, textAlign: 'center' },
   });
 
-  // console.log(dashUser, 'dashUser')
-  // console.log(matches, 'matches')
+
 
   return (
     <View style={dashStyle.container}>
