@@ -280,7 +280,9 @@ async function peopleFinder(list, blackListID) {
       const oneuser = await UsersModel.findOne({ _id: i.id })
       // console.log(oneuser, 'oneuser!!!!!!k!!!!!!!!');
       const id = oneuser._id;
+      // console.log(id,'id', blackListID.toString(), 'blacklist')
       for (let i = 0; i < users.length; i++) {
+        // console.log(users[i]._id.toString(), 'userId')
         if (users[i]._id.toString() === id.toString() || users[i]._id.toString() === blackListID.toString()) { //check later so I don't see myself --> DONE
           // console.log('found duplicate or bug', users[i])
           users.splice(i, 1);

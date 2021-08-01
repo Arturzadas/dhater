@@ -94,6 +94,11 @@ export default function Upload({ route, navigation }) {
             return response.json()
           })
           .then((response) => {
+            for (let k = 0; k< response.users.length; k ++) {
+              if (response.users[k]._id === user._id) {
+                response.users.splice(k, 1);
+              }
+            }
             // console.log(response, 'people')
             setPeople(response);
           })
@@ -105,11 +110,11 @@ export default function Upload({ route, navigation }) {
   async function displayCommonDislikes(userSync) {
     let dislikes = [];
     for (let j = 0; j < userSync.disliked.length; j++) {
-      console.log('here')
+      // console.log('here')
       for (let k = 0; k < dashUser.disliked.length; k++) {
         if (userSync.disliked[j].id === dashUser.disliked[k].id) {
           if (dislikes.includes(userSync.disliked[j].id)) {
-            console.log('duplicate');
+            // console.log('duplicate');
           } else {
             dislikes.push(userSync.disliked[j].id);
           }
@@ -127,7 +132,7 @@ export default function Upload({ route, navigation }) {
       }
     }
 
-    console.log(result)
+    // console.log(result)
     setCommonDislikes(result);
   }
 
@@ -181,6 +186,7 @@ export default function Upload({ route, navigation }) {
   async function displayNextUser() {
     if (i === people.users.length) {
       setCurrent(noUsers);
+      setCommonDislikes([]);
       return
     }
     setCurrent(people.users[i]);
@@ -198,6 +204,10 @@ export default function Upload({ route, navigation }) {
   // console.log(syncedCommon, 'common')
 
   function hidePressable() {
+    setPressable(false);
+  }
+  
+  function hideDislikes() {
     setPressable(false);
   }
 
@@ -292,10 +302,15 @@ export default function Upload({ route, navigation }) {
                   handleMatching(true);
                 }}
                 ><Text>Like</Text></Pressable>
-                {commonDislikes && <Text>{commonDislikes[0].topic}</Text>}
               <Pressable
                 onPress={() => displayNextUser()}
-              ><Text>Dislike</Text></Pressable>
+                ><Text>Dislike</Text></Pressable>
+                {commonDislikes && commonDislikes.map(el => (
+                  <View key={el._id}>
+                    <Text>{el.topic}</Text>
+                    <Image source={el.imgsrc} style={styles.dashImg}></Image>
+                  </View>
+                ))}
             </View>
           }
           {current.message &&
