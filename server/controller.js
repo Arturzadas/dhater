@@ -1,3 +1,4 @@
+// hello
 const { UsersModel } = require('./models/model');
 const { LikesModel } = require('./models/model');
 const { ChatModel } = require('./models/model');
@@ -60,6 +61,24 @@ module.exports.updatePic = async (req, res) => {
 module.exports.getTopics = async (req, res) => {
   try {
     const topics = await LikesModel.find();
+    res.status(200);
+    // console.log(topics);
+    res.json(topics);
+  } catch (err) {
+    res.status(500)
+    console.log('Error at controller:    ', err)
+  }
+}
+
+module.exports.getDislikes = async (req, res) => {
+  try {
+    const topics = [];
+    const dislikes = req.body.dislike;
+    if (!dislikes.length) return
+    for (let i of dislikes) {
+      const oneDislike = await LikesModel.findOne({_id: i});
+      topics.push(oneDislike);
+    }
     res.status(200);
     // console.log(topics);
     res.json(topics);
@@ -135,7 +154,7 @@ module.exports.getPeople = async (req, res) => {
     }
     const response = await topicFinder(likesArray);
     // console.log(response, 'response!!!!')
-    const newPeople = await peopleFinder(response);
+    const newPeople = await peopleFinder(response, req.body.id);
     response.users = newPeople;
     res.status(201);
     res.json(response);
@@ -148,12 +167,14 @@ module.exports.getPeople = async (req, res) => {
 module.exports.getAllMatchProfiles = async (req, res) => {
   try {
     const userArray = req.body.matches;
+    const id = req.body.user;
+    const response = [];
     for (let i = 0; i < userArray.length; i++) {
-      const currentUser = await UsersModel.findOne({_id: userArray[i]});
-      console.log(currentUser, 'current');
+      const currentUser = await UsersModel.findOne({ _id: userArray[i] });
+      response.push(currentUser)
     }
     res.status(201);
-    res.json();
+    res.json(response);
   } catch (err) {
     res.status(500);
     console.log('Error at controller:    ', err);
@@ -201,10 +222,6 @@ module.exports.handleLike = async (req, res) => {
   }
 }
 
-let matchBool = false;
-
-let newMatchChat;
-
 async function checkLikeBack(userId, likedId) {
   const me = await UsersModel.findOne({ _id: userId });
   for (let k of me.likedUsers) {
@@ -215,7 +232,6 @@ async function checkLikeBack(userId, likedId) {
   }
   matchBool = false;
 }
-
 async function createMatch(userId, likedId) {
   const newChat = await ChatModel.create({
     user1: userId,
@@ -227,7 +243,23 @@ async function createMatch(userId, likedId) {
   // console.log(newChat);
   matchBool = true;
 }
+module.exports.getMatches = async (req, res) => {
+  try {
+    const userId = req.body.user;
+    const matches = await ChatModel.find({ $or: [{ user1: userId }, { user2: userId }] });
+    res.json(matches)
+  } catch (err) {
+    console.log('error at getMatches:        ', err)
+  }
 
+
+
+  let matchBool = false;
+
+  let newMatchChat;
+
+
+}
 //! helper function for asynchronicity
 async function topicFinder(list) {
   const response = { dislikes: [], users: [] };
@@ -239,18 +271,18 @@ async function topicFinder(list) {
   return response;
 }
 
-async function peopleFinder(list) {
+async function peopleFinder(list, blackListID) {
   const users = [];
   // console.log(list, 'list')
 
   for (let el of list.dislikes) {
     for (let i of el.disliked) {
       const oneuser = await UsersModel.findOne({ _id: i.id })
-      // console.log(oneuser, 'oneuser!!!!!!!!!!!!!!');
+      // console.log(oneuser, 'oneuser!!!!!!k!!!!!!!!');
       const id = oneuser._id;
       for (let i = 0; i < users.length; i++) {
-        if (users[i]._id.toString() === id.toString()) { //check later so I don't see myself
-          // console.log('found duplicate')
+        if (users[i]._id.toString() === id.toString() || users[i]._id.toString() === blackListID.toString()) { //check later so I don't see myself --> DONE
+          // console.log('found duplicate or bug', users[i])
           users.splice(i, 1);
         }
       }
@@ -260,20 +292,21 @@ async function peopleFinder(list) {
   return users;
 }
 
-
-
-
-
-
-const mock = {
-  dislikes: [
-    //dislikes objects
-    //dislikes objects
-    //dislikes objects
-  ],
-  users: [
-    //users objects
-    //users objects
-    //users objects
-  ]
+module.exports.postMessage = async (req, res) => {
+  try {
+    const message = req.body;
+    const updateChat = await ChatModel.findOneAndUpdate(
+      {_id: message.id},
+      { $push: { chat: {
+        content: message.content,
+        timestamp: message.timestamp,
+        sender: message.sender
+      }}},
+      { new: true }
+      )
+      const newChat = await ChatModel.findOne({_id: message.id})
+      res.json(newChat)
+  } catch (err) {
+    console.log('error at getMatches:        ', err)
+  }
 }

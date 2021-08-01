@@ -16,7 +16,9 @@ export default function Upload({ route, navigation }) {
   const [people, setPeople] = useState([]); //all the dislikes you have and people with the same dislikes
 
   const [current, setCurrent] = useState({disliked: []}); //current displayed user to match
-
+  
+  const [nextUser, setNextUser] = useState({disliked: []}); //current displayed user to match
+  
   const [noUsers, setNoUsers] = useState({
     _id: "6103cf811c02c605c66cd400",
     firstName: "test4",
@@ -92,9 +94,41 @@ export default function Upload({ route, navigation }) {
             return response.json()
           })
           .then((response) => {
+            // console.log(response, 'people')
             setPeople(response);
           })
       })
+    // console.log(people, 'people');
+  }
+
+
+  async function displayCommonDislikes(userSync) {
+    let dislikes = [];
+    for (let j = 0; j < userSync.disliked.length; j++) {
+      console.log('here')
+      for (let k = 0; k < dashUser.disliked.length; k++) {
+        if (userSync.disliked[j].id === dashUser.disliked[k].id) {
+          if (dislikes.includes(userSync.disliked[j].id)) {
+            console.log('duplicate');
+          } else {
+            dislikes.push(userSync.disliked[j].id);
+          }
+        }
+      }
+    }
+
+    let result = [];
+
+    for (let k = 0; k < people.dislikes.length; k++) {
+      for (let h = 0; h < dislikes.length; h++) {
+        if (dislikes[h] === people.dislikes[k]._id) {
+          result.push(people.dislikes[k]);
+        }
+      }
+    }
+
+    console.log(result)
+    setCommonDislikes(result);
   }
 
   async function getMatchChats() {
@@ -149,58 +183,33 @@ export default function Upload({ route, navigation }) {
       setCurrent(noUsers);
       return
     }
-    let dislikes = [];
-    
-    for (let j = 0; j < current.disliked.length; j++) {
-      for (let k = 0; k < dashUser.disliked.length; k++) {
-        if (current.disliked[j].id === dashUser.disliked[k].id) {
-          if (dislikes.includes(current.disliked[j].id)) {
-            console.log('duplicate');
-          } else {
-            dislikes.push(current.disliked[j].id);
-          }
-        }
+    setCurrent(people.users[i]);
+
+    let userSync = people.users[i];
+
+    displayCommonDislikes(userSync)
+
+    setI((el) => el + 1);
+  }
+
+  let syncedCommon;
+
+  // console.log(current)
+  // console.log(syncedCommon, 'common')
+
+  function hidePressable() {
+    setPressable(false);
+  }
+
+  async function getMatchProfiles() {
+    const userArray = [];
+    for (let k of synced.matches) {
+      if (k.user2 === synced._id) {
+        userArray.push(k.user1);
+      } else {
+        userArray.push(k.user2);
       }
     }
-    fetch(`${api}/getdislikes`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        dislike: dislikes
-      })
-    })
-      .then((response) => {
-        return response.json()
-      })
-      .then(response=> {
-        console.log(response, 'commonlikes')
-        syncedCommon = response;
-      })
-      setCommonDislikes(syncedCommon);
-      setCurrent(people.users[i]);
-      setI((el) => el + 1);
-    }
-
-    let syncedCommon;
-
-    console.log(current)
-    console.log(syncedCommon, 'common')
-    
-    function hidePressable() {
-      setPressable(false);
-    }
-    
-    async function getMatchProfiles() {
-      const userArray = [];
-      for (let k of synced.matches) {
-        if (k.user2 === synced._id) {
-          userArray.push(k.user1);
-        } else {
-          userArray.push(k.user2);
-        }
-      }
     await fetch(`${api}/getmatchprofiles`, {
       method: 'POST',
       headers: {
@@ -230,7 +239,7 @@ export default function Upload({ route, navigation }) {
       }
     }
 
-    navigation.navigate('Chat', {user: dashUser, matched: matchedUser, chat: correctMatch});
+    navigation.navigate('Chat', { user: dashUser, matched: matchedUser, chat: correctMatch });
   }
 
 

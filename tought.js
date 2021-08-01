@@ -15,8 +15,8 @@
 //*   each user should have a 'progress' number associated to it, so we can know if he's uploaded the image and answered the dislike questions
 //?   start styling the app properly!
 
-//* ADD MATCHES TO USER !!!!
-//* UPDATE DASHUSER WITH THE NEW MATCHES!!!!!
+//* add matches to user
+//* update dashuser with new matches
 
 
 

@@ -32,6 +32,9 @@ app.put('/updatestep', controller.updateSteps);
 app.post('/getpeople', controller.getPeople);
 app.post('/sendlike', controller.handleLike);
 app.post('/getmatchprofiles', controller.getAllMatchProfiles);
+app.post('/getchats', controller.getMatches);
+app.post('/postmessage', controller.postMessage);
+app.post('/getdislikes', controller.getDislikes);
 
 
 
