@@ -8,10 +8,16 @@ import Upload from './components/upload';
 import Q1 from './components/Q1';
 import Dashboard from './components/dashboard';
 import Chat from './components/chat';
+import { useFonts } from '@use-expo/font'
 
 
 export default function App() {
-
+  
+  const [isLoaded] = useFonts({
+    'ubuntu': require('./assets/fonts/Ubuntu-Regular.ttf'),
+    'satisfy': require('./assets/fonts/Satisfy-Regular.ttf')
+  });
+  
   const Stack = createStackNavigator();
 
   const [userData, setUserData] = React.useState({})
@@ -24,9 +30,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
-          name="Login"
+          name="dHating"
           component={Login}
-          options={navOptions}
+          options={title}
         />
         <Stack.Screen
           name="Register"
@@ -79,5 +85,14 @@ const noBackBtn = {
 const navOptions = {
   headerStyle: {backgroundColor: '#f4511e'},
   headerTintColor: '#fff',
-  headerTitleStyle: {fontWeight: 'bold', alignSelf: 'center'},
+  headerTitleStyle: {fontWeight: 'bold', alignSelf: 'center', fontFamily: 'ubuntu'},
+  headerRight: () => {
+    return <View></View>
+  }
+}
+
+const title = {
+  headerStyle: {backgroundColor: '#f4511e'},
+  headerTintColor: '#fff',
+  headerTitleStyle: {fontSize: 40, alignSelf: 'center', fontFamily: 'satisfy'},
 }

@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     margin: 12,
     marginBottom: 0,
     textAlign: 'left',
+    fontFamily: 'ubuntu',
   },
   button: {
     margin: 12,
@@ -125,6 +126,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18,
+    fontFamily: 'ubuntu',
   },
   view: {
     display: 'flex',

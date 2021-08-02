@@ -100,12 +100,14 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    fontFamily: 'ubuntu',
   },
   loginLabel: {
     margin: 12,
     marginBottom: 0,
     textAlign: 'left',
+    fontFamily: 'ubuntu',
   },
   button: {
     margin: 12,
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18,
+    fontFamily: 'ubuntu',
   },
   view: {
     display: 'flex',
