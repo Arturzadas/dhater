@@ -11,6 +11,10 @@ app.use(CORS());
 
 app.use(express.json());
 
+require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+  console.log('addr: ' + add);
+})
+
 
 
 app.all('/*', function(req, res, next) {

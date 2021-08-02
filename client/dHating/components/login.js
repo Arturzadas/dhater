@@ -13,7 +13,7 @@ function Login ({ navigation }) {
     password: ''
   });
 
-  const api = 'http://localhost:3080'
+  const api = 'http://127.0.1.1:3080'
 
   const handleChange = (name, value) => {
     // const { name, value } = value.target;

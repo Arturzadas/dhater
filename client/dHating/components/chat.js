@@ -11,7 +11,7 @@ function Chat ({ navigation, route }) {
   const { matched } = route.params;
   const { chat } = route.params;
 
-  const api = 'http://localhost:3080'
+  const api = 'http://127.0.1.1:3080'
 
   const [currentChat, setCurrentChat] = useState(null)
 

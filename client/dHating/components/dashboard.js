@@ -35,7 +35,7 @@ export default function Upload({ route, navigation }) {
       }
     ],
     __v: 0,
-    imgsrc: "https://i2.wp.com/cdn3.iconfinder.com/data/icons/pictomisc/100/sadface-512.png",
+    imgsrc: "https://i1.sndcdn.com/avatars-ogZ6belzWBS4NT9t-NLLydw-t500x500.jpg",
     message: `There's no one left to match`
   })
 
@@ -53,7 +53,7 @@ export default function Upload({ route, navigation }) {
 
   const [commonDislikes, setCommonDislikes] = useState(null);
 
-  const api = 'http://localhost:3080'
+  const api = 'http://127.0.1.1:3080'
 
   let synced;
 
@@ -279,7 +279,7 @@ export default function Upload({ route, navigation }) {
   const { width } = Dimensions.get('window');
   const dashStyle = StyleSheet.create({
     container: { flex: 1, backgroundColor: 'white', alignContent: 'center', justifyContent: 'center' },
-    child: { width, justifyContent: 'center' , backgroundColor: '#F7F5F0' },
+    child: { width, justifyContent: 'center', backgroundColor: '#F7F5F0' },
     text: { fontSize: width * 0.05, textAlign: 'center' },
   });
 
@@ -302,12 +302,36 @@ export default function Upload({ route, navigation }) {
             Hey {dashUser.firstName}, time to start swiping!
           </Text>
           <Text>Things you may dislike...</Text>
-          {newTopics && newTopics.map(el => {
-            let id = el._id + dashUser._id
-            return (
-              <Text key={id}>{el.topic}</Text>
-              )})}
-            
+          <View style={styles.profileDislikes}>
+
+          <View style={styles.dislikesView}>
+            <ScrollView horizontal={true} vertical={false}>
+
+
+              {newTopics && newTopics.map(el => {
+                let id = el._id + current._id;
+                return (
+                  <TouchableOpacity
+                  key={id}
+                  >
+                    <View
+                    // style={styles.commonDislike}
+                    >
+                      <ImageBackground
+                        source={require('../assets/images/gradient.png')}
+                        style={styles.buttonImg}
+                        imageStyle={{ borderRadius: 30 }}
+                        >
+                        <Text>{el.topic}</Text>
+                      </ImageBackground>
+                    </View>
+                  </TouchableOpacity>
+                )
+              })}
+            </ScrollView>
+          </View>
+              </View>
+
         </View>
         {/* second screen */}
         {/* second screen */}
@@ -337,30 +361,31 @@ export default function Upload({ route, navigation }) {
                   style={styles.dislikesView}
                 >
 
-                <ScrollView horizontal={true} vertical={false} 
-                >
+                  <ScrollView horizontal={true} vertical={false}
+                  >
 
-                  {commonDislikes && commonDislikes.map(el => {
-                    let id = el._id + current._id;
-                    return (
-                      <TouchableOpacity
-                      key={id}
-                      >
-                    <View
-                    // style={styles.commonDislike}
-                    >
-                        <ImageBackground
-                      source={require('../assets/images/gradient.png')}
-                      style={styles.buttonImg}
-                      imageStyle={{ borderRadius: 30}}
-                      >
-                      <Text>{el.topic}</Text>
-                      </ImageBackground>
-                    </View>
-                      </TouchableOpacity>
-                  )})}
-                </ScrollView>
-                  </View>
+                    {commonDislikes && commonDislikes.map(el => {
+                      let id = el._id + current._id;
+                      return (
+                        <TouchableOpacity
+                          key={id}
+                        >
+                          <View
+                          // style={styles.commonDislike}
+                          >
+                            <ImageBackground
+                              source={require('../assets/images/gradient.png')}
+                              style={styles.buttonImg}
+                              imageStyle={{ borderRadius: 30 }}
+                            >
+                              <Text>{el.topic}</Text>
+                            </ImageBackground>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    })}
+                  </ScrollView>
+                </View>
                 <View
                   style={styles.flexContainer}
                 >
@@ -372,7 +397,7 @@ export default function Upload({ route, navigation }) {
                       handleMatching(true);
                     }}
                   ><Text style={styles.buttonText}>✔
-                  </Text></TouchableOpacity>
+                    </Text></TouchableOpacity>
                   <Text style={styles.currentNameDisplay}>{current.firstName}</Text>
                   <TouchableOpacity
                     onPress={() => displayNextUser()}
@@ -395,32 +420,32 @@ export default function Upload({ route, navigation }) {
           <View style={styles.matchView}>
 
 
-          {matchProfiles.profiles && matchProfiles.profiles.map(el => (
-            <TouchableOpacity 
-            key={el._id}
-            style={styles.matchContainer}
-            onPress={()=> {
-              openChat(el._id, el);
-            }}
-            >
+            {matchProfiles.profiles && matchProfiles.profiles.map(el => (
+              <TouchableOpacity
+                key={el._id}
+                style={styles.matchContainer}
+                onPress={() => {
+                  openChat(el._id, el);
+                }}
+              >
 
-            <TouchableOpacity
-            onPress={()=> {
-              openChat(el._id, el);
-            }}>
-              <Image
-              source={el.imgsrc}
-              style={styles.matchImg}
-              ></Image>
-            </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    openChat(el._id, el);
+                  }}>
+                  <Image
+                    source={el.imgsrc}
+                    style={styles.matchImg}
+                  ></Image>
+                </TouchableOpacity>
 
-            <Text
-            onPress={()=> {
-              openChat(el._id, el);
-            }}>
-              {el.firstName} {el.lastName}</Text>
+                <Text
+                  onPress={() => {
+                    openChat(el._id, el);
+                  }}>
+                  {el.firstName} {el.lastName}</Text>
               </TouchableOpacity>
-          ))}
+            ))}
           </View>
         </View>
       </SwiperFlatList>

@@ -16,7 +16,7 @@ export default function Upload({ route, navigation }) {
 
   const [i, setI] = useState(1);
 
-  const api = 'http://localhost:3080'
+  const api = 'http://127.0.1.1:3080'
 
   function getQuestions () {
     fetch(`${api}/topics`, {

@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     width: 'auto',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'flex-end',
+    // flexDirection: 'flex-end',
     color: 'white',
     padding: 15,
   },
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     width: 'auto',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'flex-end',
+    // flexDirection: 'flex-end',
     color: 'white',
     padding: 15,
   },
@@ -302,7 +302,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'flex-start'
-  }
+  },
+  profileDislikes: {
+    margin: 5,
+    width:400,
+  },
+  // peopleImage: {
+  //   height: 600,
+  //   width: 350,
+  //   borderRadius: 30,
+  //   margin: 20,
+  //   borderWidth: 1,
+  //   borderColor: '#F44336',
+  // },
 });
 
 export default styles;
