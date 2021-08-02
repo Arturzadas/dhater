@@ -26,7 +26,8 @@ function Chat ({ navigation, route }) {
   }
 
   useEffect(()=> {
-    handleChat()
+    handleChat();
+    chatRefresh();
   }, [])
 
   const handleSubmit = async (sentMessage) => {
@@ -51,6 +52,31 @@ function Chat ({ navigation, route }) {
       console.log(response)
       setCurrentChat(response)
     })
+  }
+
+  const chatRefresh = async (stop) => {
+    if (stop) {
+      return;
+    }
+    setTimeout(() => {
+      fetch(`${api}/getmatchchat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id : chat._id
+        })
+      })
+      .then((response) => {
+        return response.json()
+      })
+      .then((response) => {
+        // console.log(response)
+        setCurrentChat(response)
+      })
+      chatRefresh();
+    }, 5000);
   }
 
 

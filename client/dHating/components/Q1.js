@@ -29,8 +29,9 @@ export default function Upload({ route, navigation }) {
       return response.json()
     })
     .then((data) => {
-      setTopics(data)
-      setCurrentTopic(data[0]);
+      const sliced = data.slice(0, 5);
+      setTopics(sliced)
+      setCurrentTopic(sliced[0]);
     })
   }
 
@@ -45,12 +46,18 @@ export default function Upload({ route, navigation }) {
     bundler();
   }, [])
 
+  let synced;
+  let dislikeNumber;
+  
   async function displayNextTopic(like) {
     if (like) {
       //go to next topic
       // console.log(i)
       await setI((i) => i + 1);
+      synced = topics[i];
       setCurrentTopic(topics[i])
+      dislikeNumber = currentTopic.disliked.length
+      console.log(dislikeNumber)
     } else {
       // console.log('notliked')
       fetch(`${api}/updatelike`, {
@@ -70,6 +77,7 @@ export default function Upload({ route, navigation }) {
           // console.log(data);
         })
       await setI((i) => i + 1);
+      synced = topics[i];
       setCurrentTopic(topics[i])
     }
     if (i === topics.length) {
@@ -93,7 +101,7 @@ export default function Upload({ route, navigation }) {
         <View>
           <Text>{currentTopic.topic}</Text>
           <Image source={{ uri: currentTopic.imgsrc }} style={styles.topicImg} />
-          <Text>Disliked by (number)</Text>
+          <Text>Disliked by {dislikeNumber}</Text>
           <Pressable
           onPress={() => displayNextTopic(true)}
           ><Text>✔</Text></Pressable>

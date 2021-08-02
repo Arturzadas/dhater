@@ -15,10 +15,8 @@ export default function Upload({ route, navigation }) {
 
   const [people, setPeople] = useState([]); //all the dislikes you have and people with the same dislikes
 
-  const [current, setCurrent] = useState({disliked: []}); //current displayed user to match
-  
-  const [nextUser, setNextUser] = useState({disliked: []}); //current displayed user to match
-  
+  const [current, setCurrent] = useState({ disliked: [] }); //current displayed user to match
+
   const [noUsers, setNoUsers] = useState({
     _id: "6103cf811c02c605c66cd400",
     firstName: "test4",
@@ -40,6 +38,8 @@ export default function Upload({ route, navigation }) {
     imgsrc: "https://i2.wp.com/cdn3.iconfinder.com/data/icons/pictomisc/100/sadface-512.png",
     message: `There's no one left to match`
   })
+
+  const [newTopics, setNewTopics] = useState([]);
 
   const [pressable, setPressable] = useState(true);
 
@@ -79,6 +79,7 @@ export default function Upload({ route, navigation }) {
       })
       .then((e) => {
         getMatchChats()
+        getNewTopics()
         if (!first) return;
         fetch(`${api}/getpeople`, {
           method: 'POST',
@@ -94,7 +95,7 @@ export default function Upload({ route, navigation }) {
             return response.json()
           })
           .then((response) => {
-            for (let k = 0; k< response.users.length; k ++) {
+            for (let k = 0; k < response.users.length; k++) {
               if (response.users[k]._id === user._id) {
                 response.users.splice(k, 1);
               }
@@ -206,7 +207,7 @@ export default function Upload({ route, navigation }) {
   function hidePressable() {
     setPressable(false);
   }
-  
+
   function hideDislikes() {
     setPressable(false);
   }
@@ -250,6 +251,25 @@ export default function Upload({ route, navigation }) {
     }
 
     navigation.navigate('Chat', { user: dashUser, matched: matchedUser, chat: correctMatch });
+  }
+
+  async function getNewTopics() {
+    fetch(`${api}/getnewtopics`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: synced._id
+      })
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      console.log(response, 'here')
+      setNewTopics(response);
+    })
   }
 
 
@@ -301,16 +321,16 @@ export default function Upload({ route, navigation }) {
                   displayNextUser();
                   handleMatching(true);
                 }}
-                ><Text>Like</Text></Pressable>
+              ><Text>Like</Text></Pressable>
               <Pressable
                 onPress={() => displayNextUser()}
-                ><Text>Dislike</Text></Pressable>
-                {commonDislikes && commonDislikes.map(el => (
-                  <View key={el._id}>
-                    <Text>{el.topic}</Text>
-                    <Image source={el.imgsrc} style={styles.dashImg}></Image>
-                  </View>
-                ))}
+              ><Text>Dislike</Text></Pressable>
+              {commonDislikes && commonDislikes.map(el => (
+                <View key={el._id}>
+                  <Text>{el.topic}</Text>
+                  <Image source={el.imgsrc} style={styles.dashImg}></Image>
+                </View>
+              ))}
             </View>
           }
           {current.message &&
@@ -321,8 +341,8 @@ export default function Upload({ route, navigation }) {
         <View style={dashStyle.child}>
           {matchProfiles.profiles && matchProfiles.profiles.map(el => (
             <View
-            key={el._id}
-            style={styles.matchedUser}
+              key={el._id}
+              style={styles.matchedUser}
             >
               <Pressable
                 onPress={() => {

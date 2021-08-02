@@ -76,7 +76,7 @@ module.exports.getDislikes = async (req, res) => {
     const dislikes = req.body.dislike;
     if (!dislikes.length) return
     for (let i of dislikes) {
-      const oneDislike = await LikesModel.findOne({_id: i});
+      const oneDislike = await LikesModel.findOne({ _id: i });
       topics.push(oneDislike);
     }
     res.status(200);
@@ -298,17 +298,56 @@ module.exports.postMessage = async (req, res) => {
   try {
     const message = req.body;
     const updateChat = await ChatModel.findOneAndUpdate(
-      {_id: message.id},
-      { $push: { chat: {
-        content: message.content,
-        timestamp: message.timestamp,
-        sender: message.sender
-      }}},
+      { _id: message.id },
+      {
+        $push: {
+          chat: {
+            content: message.content,
+            timestamp: message.timestamp,
+            sender: message.sender
+          }
+        }
+      },
       { new: true }
-      )
-      const newChat = await ChatModel.findOne({_id: message.id})
-      res.json(newChat)
+    )
+    const newChat = await ChatModel.findOne({ _id: message.id })
+    res.json(newChat)
   } catch (err) {
     console.log('error at getMatches:        ', err)
+  }
+}
+
+module.exports.getChat = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const updatedChat = await ChatModel.findOne({ _id: id });
+    res.status(200);
+    res.json(updatedChat);
+  } catch (err) {
+    console.log('error at getChat:   ', err)
+  }
+}
+
+module.exports.getNewTopics = async (req, res) => {
+  try {
+    const user = req.body.user;
+    console.log(user, 'userID');
+    const newTopics = await LikesModel.find();
+    let result = [];
+    for (let k = 0 ; k < newTopics.length; k ++) {
+      let pushable = true;
+      for (let i = 0; i < newTopics[k].disliked.length; i++) {
+        if (newTopics[k].disliked[i].id === user) {
+          pushable = false;
+        }
+      }
+      if (pushable) {
+        result.push(newTopics[k]);
+      }
+    }
+    console.log(result, 'result');
+    res.json(result);
+  } catch (err) {
+    console.log('error at getNewTopics, :', err)
   }
 }

@@ -35,6 +35,8 @@ app.post('/getmatchprofiles', controller.getAllMatchProfiles);
 app.post('/getchats', controller.getMatches);
 app.post('/postmessage', controller.postMessage);
 app.post('/getdislikes', controller.getDislikes);
+app.post('/getmatchchat', controller.getChat);
+app.post('/getnewtopics', controller.getNewTopics);
 
 
 
