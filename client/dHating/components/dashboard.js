@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
-import { Dimensions, StyleSheet, View, Image, Pressable, Text } from 'react-native';
+import { Dimensions, StyleSheet, View, Image, Pressable, Text, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import styles from '../styles/styles'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
@@ -301,6 +301,10 @@ export default function Upload({ route, navigation }) {
             style={dashStyle.text}>
             Hey {dashUser.firstName}, time to start swiping!
           </Text>
+          <Text>Things you may dislike...</Text>
+          {newTopics && newTopics.map(el => (
+            <Text key={el._id}>{el.topic}</Text>
+          ))}
           {/* second screen */}
         </View>
         <View style={[dashStyle.child, styles.view]}>
@@ -309,7 +313,7 @@ export default function Upload({ route, navigation }) {
             hidePressable();
           }}
           >
-            <Text>Click here to start</Text></Pressable>}
+            <Text style={{fontFamily: 'Ubuntu', fontSize: 40}}>Click here to start</Text></Pressable>}
           {current.imgsrc &&
             <View>
               <Image
@@ -363,7 +367,6 @@ export default function Upload({ route, navigation }) {
               </Pressable>
             </View>
           ))}
-
         </View>
       </SwiperFlatList>
     </View>

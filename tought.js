@@ -5,16 +5,16 @@
 //! priorities
 //*         chat must refresh when entered / every 5 seconds to see new messages
 //!         1h --- 30m
-//TODO      limit likes questions to 5 at the beginning, and then add more later
-//!         1h
+//*         limit likes questions to 5 at the beginning, and then add more later
+//!         1h --- 5m
 //TODO      dislikes to dislike new things
+//!         3h --- 1h
+//TODO      add proper styling to everything
 //!         3h
 //TODO      editable profile section with backend update + dashboard refresh
 //!         2h
 //?         people to match new people ---- still need to add more user details + stylesheet
 //!         1h
-//TODO      add proper styling to everything
-//!         3h
 //?         configure routing buttons and titles ---- need more stylesheet and logos etc
 //!         30m
 //!TOTAL    10h30m
