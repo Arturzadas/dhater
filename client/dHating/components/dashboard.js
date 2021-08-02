@@ -328,24 +328,33 @@ export default function Upload({ route, navigation }) {
                 style={styles.peopleImage}
                 imageStyle={{ borderRadius: 30, width: 348, height: 597}}
               >
+                <View style={styles.dislikesView}>
+
+                {commonDislikes && commonDislikes.map(el => (
+                  <View key={el._id}>
+                    <Text>{el.topic}</Text>
+                  </View>
+                ))}
+                  </View>
+                <View
+                style={styles.flexContainer}
+                >
+
                 <Pressable
                   style={styles.likeBtn}
                   onPress={() => {
                     displayNextUser();
                     handleMatching(true);
                   }}
-                ><Text style={styles.buttonText}>Like</Text></Pressable>
+                  ><Text style={styles.buttonText}>Like</Text></Pressable>
                 <Pressable
                   onPress={() => displayNextUser()}
                   style={styles.dislikeBtn}
-                ><Text style={styles.buttonText}>Dislike</Text></Pressable>
+                  ><Text style={styles.buttonText}>Dislike
+                  </Text>
+                  </Pressable>
+                  </View>
               </ImageBackground>
-              {commonDislikes && commonDislikes.map(el => (
-                <View key={el._id}>
-                  <Text>{el.topic}</Text>
-                  <Image source={el.imgsrc} style={styles.dashImg}></Image>
-                </View>
-              ))}
             </View>
           }
           {current.message &&

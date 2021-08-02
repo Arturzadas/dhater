@@ -146,9 +146,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   peopleImage: {
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
     height: 600,
     width: 350,
     borderRadius: 30,
@@ -159,29 +156,48 @@ const styles = StyleSheet.create({
   peopleContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignContent: 'flex-end',
   },
   likeBtn : {
-    margin: 12,
+    margin: 30,
     marginTop: 25,
-    height: 40,
-    width: 150,
+    height: 70,
+    width: 70,
     backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 100,
     color: 'white',
+    borderWidth: 1,
+    borderColor: '#F44336'
   },
   dislikeBtn : {
-    margin: 12,
+    margin: 30,
     marginTop: 25,
-    height: 40,
-    width: 150,
+    height: 70,
+    width: 70,
     backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 100,
     color: 'white',
+    borderWidth: 1,
+    borderColor: '#F44336'
+  },
+  flexContainer : {
+    flex: 0.27,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-around',
+  },
+  dislikesView : {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-around',
+    height: 50,
   }
 });
 
