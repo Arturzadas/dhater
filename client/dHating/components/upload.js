@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform, Pressable, Text } from 'react-native';
+import { TouchableOpacity, Image, View, Platform, Pressable, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import styles from '../styles/styles'
 
@@ -82,16 +82,18 @@ export default function Upload({ route, navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
+      <TouchableOpacity title="Pick an image from camera roll" onPress={pickImage} style={styles.button}>
+        <Text style={styles.buttonText}>Pick a profile picture</Text>
+      </TouchableOpacity>
       <Image source={{ uri: update.imgsrc }} style={styles.profileimg} />
       {update.imgsrc &&
-        <Pressable
+        <TouchableOpacity
           title='Continue'
           style={styles.button}
           onPress={() => { navigation.navigate('Q1', {nextUser: update}) }}
         >
           <Text style={styles.buttonText}>Continue</Text>
-        </Pressable>}
+        </TouchableOpacity>}
     </View>
   );
 }

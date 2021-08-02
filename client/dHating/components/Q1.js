@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform, Pressable, Text } from 'react-native';
+import { TouchableOpacity, Image, View, Platform, Pressable, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import styles from '../styles/styles'
 
@@ -98,16 +98,21 @@ export default function Upload({ route, navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
       {currentTopic &&
-        <View>
+        <View style={styles.view}>
           <Text>{currentTopic.topic}</Text>
-          <Image source={{ uri: currentTopic.imgsrc }} style={styles.topicImg} />
-          <Text>Disliked by {dislikeNumber}</Text>
-          <Pressable
+          <Image source={{ uri: currentTopic.imgsrc }} style={styles.topicImage} />
+          <View
+                  style={styles.flexContainer}
+                >
+          <TouchableOpacity
           onPress={() => displayNextTopic(true)}
-          ><Text>✔</Text></Pressable>
-          <Pressable
+          style={styles.likeBtn}
+          ><Text style={styles.buttonText}>✔</Text></TouchableOpacity>
+          <TouchableOpacity
           onPress={() => displayNextTopic(false)}
-          ><Text>✖</Text></Pressable>
+          style={styles.dislikeBtn}
+          ><Text style={styles.buttonText}>✖</Text></TouchableOpacity>
+          </View>
         </View>
 
     }

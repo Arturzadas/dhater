@@ -1,5 +1,5 @@
 import React, { Component, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, TouchableOpacity, ImageBackground } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 // import Upload from './upload';
@@ -78,20 +78,20 @@ function Login ({ navigation }) {
         name="password"
         secureTextEntry={true}
       />
-      <Pressable
+      <TouchableOpacity
         title='Start dHating'
-        style={styles.button}
         onPress={() => { userLogin(login) }}
+        style={styles.button}
       >
-        <Text style={styles.buttonText}>Start dHating</Text>
-      </Pressable>
-      <Pressable
+          <Text style={styles.buttonText}>Start dHating</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         title='Register'
         style={styles.button}
         onPress={() => { navigation.navigate('Register') }}
       >
         <Text style={styles.buttonText}>Register</Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   )
 }

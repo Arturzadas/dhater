@@ -279,7 +279,7 @@ export default function Upload({ route, navigation }) {
   const { width } = Dimensions.get('window');
   const dashStyle = StyleSheet.create({
     container: { flex: 1, backgroundColor: 'white', alignContent: 'center', justifyContent: 'center' },
-    child: { width, justifyContent: 'center' },
+    child: { width, justifyContent: 'center' , backgroundColor: '#F7F5F0' },
     text: { fontSize: width * 0.05, textAlign: 'center' },
   });
 
@@ -289,7 +289,7 @@ export default function Upload({ route, navigation }) {
     <View style={dashStyle.container}>
       <SwiperFlatList
         index={1}
-        showPagination={false}
+        showPagination={true}
         renderAll={true}
       >
         {/* first screen */}
@@ -302,9 +302,12 @@ export default function Upload({ route, navigation }) {
             Hey {dashUser.firstName}, time to start swiping!
           </Text>
           <Text>Things you may dislike...</Text>
-          {newTopics && newTopics.map(el => (
-            <Text key={el._id}>{el.topic}</Text>
-          ))}
+          {newTopics && newTopics.map(el => {
+            let id = el._id + dashUser._id
+            return (
+              <Text key={id}>{el.topic}</Text>
+              )})}
+            
         </View>
         {/* second screen */}
         {/* second screen */}
@@ -337,9 +340,15 @@ export default function Upload({ route, navigation }) {
                 <ScrollView horizontal={true} vertical={false} 
                 >
 
-                  {commonDislikes && commonDislikes.map(el => (
-                      <TouchableOpacity>
-                    <View key={el._id} style={styles.commonDislike}>
+                  {commonDislikes && commonDislikes.map(el => {
+                    let id = el._id + current._id;
+                    return (
+                      <TouchableOpacity
+                      key={id}
+                      >
+                    <View
+                    // style={styles.commonDislike}
+                    >
                         <ImageBackground
                       source={require('../assets/images/gradient.png')}
                       style={styles.buttonImg}
@@ -349,7 +358,7 @@ export default function Upload({ route, navigation }) {
                       </ImageBackground>
                     </View>
                       </TouchableOpacity>
-                  ))}
+                  )})}
                 </ScrollView>
                   </View>
                 <View
@@ -362,11 +371,12 @@ export default function Upload({ route, navigation }) {
                       displayNextUser();
                       handleMatching(true);
                     }}
-                  ><Text style={styles.buttonText}>Like</Text></TouchableOpacity>
+                  ><Text style={styles.buttonText}>✔
+                  </Text></TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => displayNextUser()}
                     style={styles.dislikeBtn}
-                  ><Text style={styles.buttonText}>Dislike
+                  ><Text style={styles.buttonText}>✖
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -381,30 +391,35 @@ export default function Upload({ route, navigation }) {
         {/* third screen */}
         {/* third screen */}
         <View style={dashStyle.child}>
+          <View style={styles.matchView}>
+
+
           {matchProfiles.profiles && matchProfiles.profiles.map(el => (
-            <View
-              key={el._id}
-              style={styles.matchedUser}
+            <TouchableOpacity 
+            style={styles.matchContainer}
+            onPress={()=> {
+              openChat(el._id, el);
+            }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  openChat(el._id, el);
-                }}
-              >
 
-                <Image
-                  source={{ uri: el.imgsrc }}
-                  style={styles.matchImg}
+            <TouchableOpacity
+            onPress={()=> {
+              openChat(el._id, el);
+            }}>
+              <Image
+              source={el.imgsrc}
+              style={styles.matchImg}
+              ></Image>
+            </TouchableOpacity>
 
-                >
-
-                </Image>
-                <Text
-                >{el.firstName} {el.lastName}
-                </Text>
+            <Text
+            onPress={()=> {
+              openChat(el._id, el);
+            }}>
+              {el.firstName} {el.lastName}</Text>
               </TouchableOpacity>
-            </View>
           ))}
+          </View>
         </View>
       </SwiperFlatList>
     </View>

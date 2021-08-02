@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     fontFamily: 'ubuntu',
   },
   view: {
-    display: 'flex',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '20%'
+    backgroundColor: '#F7F5F0'
   },
   profileimg : {
     height: 300,
@@ -86,11 +86,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   matchImg: {
-    height: 150,
-    width: 150,
+    height: 70,
+    width: 70,
     borderRadius: 300,
-    margin: 20,
-    borderWidth: 1,
+    margin: 10,
+    borderWidth: 3,
     borderColor: '#F44336'
   },
   messageInput : {
@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
   },
   startButton : {
     margin: 12,
-    marginTop: 25,
     height: 40,
     width: 200,
     backgroundColor: 'black',
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   commonDislike : {
-    margin: 10,
+    margin: 20,
     height: 30,
     width: 'auto',
     // backgroundColor: '#f4511e',
@@ -208,15 +207,57 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     color: 'white',
     borderWidth: 1,
-    borderColor: '#F44336'
+    borderColor: '#F44336',
+    padding: 0,
   },
   buttonImg: {
+    margin: 5,
+    marginBottom: 15,
     height: 30,
     width: 'auto',
-    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'flex-end',
+    color: 'white',
     padding: 15,
+  },
+  loginBtn : {
+    margin: 20,
+    flex: 1,
+    marginTop: 25,
+    height: 40,
+    width: 'auto',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'flex-end',
+    color: 'white',
+    padding: 15,
+  },
+  topicImage: {
+    height: 500,
+    width: 350,
+    borderRadius: 30,
+    margin: 20,
+    borderWidth: 1,
+    borderColor: '#F44336',
+  },
+  matchContainer: {
+    flex: 0.13,
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#E2E0DB',
+
+  },
+  matchView : {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
+  matchNames : {
+    fontFamily: 'ubuntu',
+    fontWeight: 'bold'
   }
 });
 
