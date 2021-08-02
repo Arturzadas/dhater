@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
   },
   likeBtn : {
     margin: 30,
-    marginTop: 25,
     height: 70,
     width: 70,
     backgroundColor: 'black',
@@ -175,7 +174,6 @@ const styles = StyleSheet.create({
   },
   dislikeBtn : {
     margin: 30,
-    marginTop: 25,
     height: 70,
     width: 70,
     backgroundColor: 'black',
@@ -187,7 +185,7 @@ const styles = StyleSheet.create({
     borderColor: '#F44336'
   },
   flexContainer : {
-    flex: 0.27,
+    flex: 0.2,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-around',
@@ -198,6 +196,27 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'space-around',
     height: 50,
+  },
+  commonDislike : {
+    margin: 10,
+    height: 30,
+    width: 'auto',
+    // backgroundColor: '#f4511e',
+    // opacity: 0.85,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    color: 'white',
+    borderWidth: 1,
+    borderColor: '#F44336'
+  },
+  buttonImg: {
+    height: 30,
+    width: 'auto',
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 15,
   }
 });
 

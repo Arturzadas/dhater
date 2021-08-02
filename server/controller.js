@@ -331,7 +331,7 @@ module.exports.getChat = async (req, res) => {
 module.exports.getNewTopics = async (req, res) => {
   try {
     const user = req.body.user;
-    console.log(user, 'userID');
+    // console.log(user, 'userID');
     const newTopics = await LikesModel.find();
     let result = [];
     for (let k = 0 ; k < newTopics.length; k ++) {
@@ -345,7 +345,7 @@ module.exports.getNewTopics = async (req, res) => {
         result.push(newTopics[k]);
       }
     }
-    console.log(result, 'result');
+    // console.log(result, 'result');
     res.json(result);
   } catch (err) {
     console.log('error at getNewTopics, :', err)

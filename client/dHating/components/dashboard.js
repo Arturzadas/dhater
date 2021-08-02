@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
-import { Dimensions, StyleSheet, View, Image, Pressable, Text, ImageBackground } from 'react-native';
+import { Dimensions, StyleSheet, View, Image, Pressable, Text, ImageBackground, ScrollView, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import styles from '../styles/styles'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
@@ -305,20 +305,22 @@ export default function Upload({ route, navigation }) {
           {newTopics && newTopics.map(el => (
             <Text key={el._id}>{el.topic}</Text>
           ))}
-          {/* second screen */}
         </View>
+        {/* second screen */}
+        {/* second screen */}
+        {/* second screen */}
         <View style={[dashStyle.child, styles.view]}>
           {pressable &&
             <View style={styles.peopleContainer}>
               <Image source={{ uri: dashUser.imgsrc }} style={styles.peopleImage}></Image>
-              <Pressable
+              <TouchableOpacity
                 style={styles.startButton}
                 onPress={() => {
                   displayNextUser();
                   hidePressable();
                 }}
               >
-                <Text style={styles.buttonText}>Start matching here!</Text></Pressable>
+                <Text style={styles.buttonText}>Start matching here!</Text></TouchableOpacity>
             </View>
           }
           {current.imgsrc &&
@@ -326,34 +328,48 @@ export default function Upload({ route, navigation }) {
               <ImageBackground
                 source={{ uri: current.imgsrc }}
                 style={styles.peopleImage}
-                imageStyle={{ borderRadius: 30, width: 348, height: 597}}
+                imageStyle={{ borderRadius: 30, width: 348, height: 597 }}
               >
-                <View style={styles.dislikesView}>
-
-                {commonDislikes && commonDislikes.map(el => (
-                  <View key={el._id}>
-                    <Text>{el.topic}</Text>
-                  </View>
-                ))}
-                  </View>
                 <View
-                style={styles.flexContainer}
+                  style={styles.dislikesView}
                 >
 
-                <Pressable
-                  style={styles.likeBtn}
-                  onPress={() => {
-                    displayNextUser();
-                    handleMatching(true);
-                  }}
-                  ><Text style={styles.buttonText}>Like</Text></Pressable>
-                <Pressable
-                  onPress={() => displayNextUser()}
-                  style={styles.dislikeBtn}
-                  ><Text style={styles.buttonText}>Dislike
-                  </Text>
-                  </Pressable>
+                <ScrollView horizontal={true} vertical={false} 
+                >
+
+                  {commonDislikes && commonDislikes.map(el => (
+                      <TouchableOpacity>
+                    <View key={el._id} style={styles.commonDislike}>
+                        <ImageBackground
+                      source={require('../assets/images/gradient.png')}
+                      style={styles.buttonImg}
+                      imageStyle={{ borderRadius: 30}}
+                      >
+                      <Text>{el.topic}</Text>
+                      </ImageBackground>
+                    </View>
+                      </TouchableOpacity>
+                  ))}
+                </ScrollView>
                   </View>
+                <View
+                  style={styles.flexContainer}
+                >
+
+                  <TouchableOpacity
+                    style={styles.likeBtn}
+                    onPress={() => {
+                      displayNextUser();
+                      handleMatching(true);
+                    }}
+                  ><Text style={styles.buttonText}>Like</Text></TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => displayNextUser()}
+                    style={styles.dislikeBtn}
+                  ><Text style={styles.buttonText}>Dislike
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </ImageBackground>
             </View>
           }
@@ -362,13 +378,15 @@ export default function Upload({ route, navigation }) {
           }
         </View>
         {/* third screen */}
+        {/* third screen */}
+        {/* third screen */}
         <View style={dashStyle.child}>
           {matchProfiles.profiles && matchProfiles.profiles.map(el => (
             <View
               key={el._id}
               style={styles.matchedUser}
             >
-              <Pressable
+              <TouchableOpacity
                 onPress={() => {
                   openChat(el._id, el);
                 }}
@@ -384,7 +402,7 @@ export default function Upload({ route, navigation }) {
                 <Text
                 >{el.firstName} {el.lastName}
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           ))}
         </View>

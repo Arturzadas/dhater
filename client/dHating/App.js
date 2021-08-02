@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './components/login';
@@ -80,6 +80,13 @@ const noBackBtn = {
   headerStyle: {backgroundColor: '#f4511e'},
   headerTintColor: '#fff',
   headerTitleStyle: {fontWeight: 'bold', alignSelf: 'center'},
+  headerBackground: () => (
+    <ImageBackground
+    source={require('./assets/images/gradient.png')}
+    imageStyle={{height : 65, width: width}}
+    >
+    </ImageBackground>
+    ),
 }
 
 const navOptions = {
@@ -88,11 +95,28 @@ const navOptions = {
   headerTitleStyle: {fontWeight: 'bold', alignSelf: 'center', fontFamily: 'ubuntu'},
   headerRight: () => {
     return <View></View>
-  }
+  },
+  headerBackground: () => (
+    <ImageBackground
+    source={require('./assets/images/gradient.png')}
+    imageStyle={{height : 65, width: width}}
+    >
+    </ImageBackground>
+    ),
 }
+
+const { width, height } = Dimensions.get('window');
 
 const title = {
   headerStyle: {backgroundColor: '#f4511e'},
+  headerBackground: () => (
+    <ImageBackground
+    source={require('./assets/images/gradient.png')}
+    imageStyle={{height : 65, width: width}}
+    >
+    </ImageBackground>
+    ),
+    
   headerTintColor: '#fff',
   headerTitleStyle: {fontSize: 40, alignSelf: 'center', fontFamily: 'satisfy'},
 }
