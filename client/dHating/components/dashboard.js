@@ -19,7 +19,7 @@ export default function Upload({ route, navigation }) {
 
   const [noUsers, setNoUsers] = useState({
     _id: "6103cf811c02c605c66cd400",
-    firstName: "test4",
+    firstName: ":(",
     lastName: "test4",
     email: "test4",
     password: "",
@@ -288,7 +288,7 @@ export default function Upload({ route, navigation }) {
   return (
     <View style={dashStyle.container}>
       <SwiperFlatList
-        index={1}
+        index={2}
         showPagination={true}
         renderAll={true}
       >
@@ -373,6 +373,7 @@ export default function Upload({ route, navigation }) {
                     }}
                   ><Text style={styles.buttonText}>✔
                   </Text></TouchableOpacity>
+                  <Text style={styles.currentNameDisplay}>{current.firstName}</Text>
                   <TouchableOpacity
                     onPress={() => displayNextUser()}
                     style={styles.dislikeBtn}
@@ -396,6 +397,7 @@ export default function Upload({ route, navigation }) {
 
           {matchProfiles.profiles && matchProfiles.profiles.map(el => (
             <TouchableOpacity 
+            key={el._id}
             style={styles.matchContainer}
             onPress={()=> {
               openChat(el._id, el);

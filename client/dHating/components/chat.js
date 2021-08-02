@@ -75,7 +75,7 @@ function Chat ({ navigation, route }) {
         // console.log(response)
         setCurrentChat(response)
       })
-      chatRefresh();
+      // chatRefresh();
     }, 5000);
   }
 
@@ -88,11 +88,16 @@ function Chat ({ navigation, route }) {
         {currentChat && currentChat.chat.map((el) => {
           if (el.sender === user._id) {
             return (
-              <View key={el._id}><Text style={styles.myMessage}>{el.content}</Text></View>
+              <View
+              key={el._id}
+              style={styles.sent}
+              ><Text>{el.content}</Text></View>
             )
           } else {
             return (
-              <View key={el._id}><Text>{el.content}</Text></View>
+              <View key={el._id}
+              style={styles.received}
+              ><Text>{el.content}</Text></View>
             )
           }
         })}

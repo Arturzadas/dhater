@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 const styles = StyleSheet.create({
@@ -96,12 +97,9 @@ const styles = StyleSheet.create({
   messageInput : {
     height: 40,
     width: 280,
-    margin: 12,
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    bottom: 1,
-    left : 1,
     fontFamily: 'ubuntu',
   },
   chatContainer : {
@@ -110,7 +108,9 @@ const styles = StyleSheet.create({
   },
   messageInputContainer : {
     flexDirection:'row',
-    flexWrap:'wrap'
+    flexWrap:'wrap',
+    margin: 20,
+    height: 40,
   },
   sendBtn: {
     margin: 2,
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'space-around',
     height: 50,
+    margin: 20
   },
   commonDislike : {
     margin: 20,
@@ -258,6 +259,49 @@ const styles = StyleSheet.create({
   matchNames : {
     fontFamily: 'ubuntu',
     fontWeight: 'bold'
+  },
+  sent: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    borderRadius: 10,
+    backgroundColor: '#fb7844',
+    width: 'auto',
+    padding: 10,
+    margin: 5,
+    alignSelf: 'flex-end',
+    borderWidth: 1,
+    borderColor: 'white'
+  },
+  received: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignSelf: 'flex-start',
+    alignItems: 'flex-end',
+    borderRadius: 10,
+    backgroundColor: '#ca335e',
+    padding: 10,
+    margin: 5,
+    borderWidth: 1,
+    borderColor: 'white'
+  },
+  currentNameDisplay : {
+    backgroundColor: 'black',
+    borderRadius: 10,
+    color: 'white',
+    borderWidth: 1,
+    borderColor: '#F44336',
+    fontSize: 20,
+    margin: 10,
+    padding: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start'
   }
 });
 
