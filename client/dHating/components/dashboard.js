@@ -272,6 +272,27 @@ export default function Upload({ route, navigation }) {
       })
   }
 
+  async function newDislike(el) {
+    fetch(`${api}/updatelike`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: dashUser,
+        topic: el
+      })
+    })
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        fetchUserUpdates()
+      })
+  }
+
+
+
 
 
   //! dashStyle had to be defined here in order to get the width property working correctly
@@ -313,6 +334,7 @@ export default function Upload({ route, navigation }) {
                 return (
                   <TouchableOpacity
                   key={id}
+                  onPress={() => newDislike(el)}
                   >
                     <View
                     // style={styles.commonDislike}

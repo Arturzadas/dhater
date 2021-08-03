@@ -5,7 +5,10 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.arturzadas96.dHating"
+    }
   },
   "name": "dHating"
 }
