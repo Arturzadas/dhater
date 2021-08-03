@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F7F5F0'
+    backgroundColor: '#F7F5F0',
+    fontFamily: 'ubuntu',
   },
   profileimg : {
     height: 300,
@@ -47,7 +48,8 @@ const styles = StyleSheet.create({
     borderRadius: 300,
     margin: 20,
     borderWidth: 1,
-    borderColor: '#F44336'
+    borderColor: '#F44336',
+    fontFamily: 'ubuntu',
   },
   topicImg: {
     height: 150,

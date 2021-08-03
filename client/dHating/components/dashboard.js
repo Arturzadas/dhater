@@ -274,6 +274,25 @@ export default function Upload({ route, navigation }) {
       })
   }
 
+  async function newDislike(el) {
+    fetch(`${api}/updatelike`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user: dashUser,
+        topic: el
+      })
+    })
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        fetchUserUpdates()
+      })
+  }
+
   async function openChat(id1, matchedUser) {
     let correctMatch;
 
@@ -315,7 +334,8 @@ export default function Upload({ route, navigation }) {
   const dashStyle = StyleSheet.create({
     container: { flex: 1, backgroundColor: 'white', alignContent: 'center', justifyContent: 'center' },
     child: { width, justifyContent: 'center', backgroundColor: '#F7F5F0' },
-    text: { fontSize: width * 0.05, textAlign: 'center' },
+    text: { fontSize: width * 0.05, textAlign: 'center', fontFamily: 'ubuntu', },
+    text2: { fontSize: width * 0.04, textAlign: 'center', fontFamily: 'ubuntu', },
   });
 
 
@@ -323,7 +343,7 @@ export default function Upload({ route, navigation }) {
   return (
     <View style={dashStyle.container}>
       <SwiperFlatList
-        index={2}
+        index={1}
         showPagination={true}
         renderAll={true}
       >
@@ -336,7 +356,7 @@ export default function Upload({ route, navigation }) {
             style={dashStyle.text}>
             Hey {dashUser.firstName}, time to start swiping!
           </Text>
-          <Text>Things you may dislike...</Text>
+          <Text style={dashStyle.text2}>Things you may dislike...</Text>
           <View style={styles.profileDislikes}>
 
           <View style={styles.dislikesView}>
@@ -358,7 +378,7 @@ export default function Upload({ route, navigation }) {
                         style={styles.buttonImg}
                         imageStyle={{ borderRadius: 30 }}
                         >
-                        <Text>{el.topic}</Text>
+                        <Text style={dashStyle.text2}>{el.topic}</Text>
                       </ImageBackground>
                     </View>
                   </TouchableOpacity>
@@ -414,7 +434,7 @@ export default function Upload({ route, navigation }) {
                               style={styles.buttonImg}
                               imageStyle={{ borderRadius: 30 }}
                             >
-                              <Text>{el.topic}</Text>
+                              <Text style={dashStyle.text2}>{el.topic}</Text>
                             </ImageBackground>
                           </View>
                         </TouchableOpacity>
@@ -450,7 +470,7 @@ export default function Upload({ route, navigation }) {
             </View>
           }
           {current.message &&
-            <Text>{current.message}</Text>
+            <Text style={dashStyle.text2}>{current.message}</Text>
           }
         </View>
         {/* third screen */}
@@ -480,6 +500,7 @@ export default function Upload({ route, navigation }) {
                 </TouchableOpacity>
 
                 <Text
+                style={dashStyle.text2}
                   onPress={() => {
                     openChat(el._id, el);
                   }}>

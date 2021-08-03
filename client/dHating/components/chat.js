@@ -75,7 +75,7 @@ function Chat ({ navigation, route }) {
         // console.log(response)
         setCurrentChat(response)
       })
-      // chatRefresh();
+      chatRefresh();
     }, 5000);
   }
 

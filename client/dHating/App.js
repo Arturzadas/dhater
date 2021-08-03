@@ -42,17 +42,17 @@ export default function App() {
         <Stack.Screen
           name="Upload"
           component={Upload}
-          options={navOptions}
+          options={upload}
         />
         <Stack.Screen
           name="Q1"
           component={Q1}
-          options={noBackBtn}
+          options={Q1style}
         />
         <Stack.Screen
           name="Dashboard"
           component={Dashboard}
-          options={noBackBtn}
+          options={title2}
         />
         <Stack.Screen
           name="Chat"
@@ -119,4 +119,55 @@ const title = {
     
   headerTintColor: '#fff',
   headerTitleStyle: {fontSize: 40, alignSelf: 'center', fontFamily: 'satisfy'},
+}
+const title2 = {
+  headerStyle: {backgroundColor: '#f4511e'},
+  headerLeft: () => {
+    return null;
+  },
+  title: 'dHating',
+  headerBackground: () => (
+    <ImageBackground
+    source={require('./assets/images/gradient.png')}
+    imageStyle={{height : 65, width: width}}
+    >
+    </ImageBackground>
+    ),
+    
+  headerTintColor: '#fff',
+  headerTitleStyle: {fontSize: 40, alignSelf: 'center', fontFamily: 'satisfy'},
+}
+const Q1style = {
+  headerStyle: {backgroundColor: '#f4511e',  fontSize: 10},
+  headerLeft: () => {
+    return null;
+  },
+  title: 'Dislikes',
+  headerBackground: () => (
+    <ImageBackground
+    source={require('./assets/images/gradient.png')}
+    imageStyle={{height : 65, width: width}}
+    >
+    </ImageBackground>
+    ),
+    
+  headerTintColor: '#fff',
+  headerTitleStyle: {fontSize: 40, alignSelf: 'center', fontFamily: 'ubuntu'},
+}
+const upload = {
+  headerStyle: {backgroundColor: '#f4511e', fontSize: 10},
+  headerLeft: () => {
+    return null;
+  },
+  title: 'Upload',
+  headerBackground: () => (
+    <ImageBackground
+    source={require('./assets/images/gradient.png')}
+    imageStyle={{height : 65, width: width}}
+    >
+    </ImageBackground>
+    ),
+    
+  headerTintColor: '#fff',
+  headerTitleStyle: {fontSize: 40, alignSelf: 'center', fontFamily: 'ubuntu'},
 }
