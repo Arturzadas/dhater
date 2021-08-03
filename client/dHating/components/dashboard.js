@@ -96,12 +96,29 @@ export default function Upload({ route, navigation }) {
             return response.json()
           })
           .then((response) => {
+            const test = response;
+            console.log(test.users, 'test')
             for (let k = 0; k < response.users.length; k++) {
               if (response.users[k]._id === user._id) {
+                console.log('here')
                 response.users.splice(k, 1);
               }
             }
-            // console.log(response, 'people')
+            const result = [];
+            const filter = [];
+            for (let d = 0; d < user.blacklist.length; d++) {
+              filter.push(user.blacklist[d].id);
+            }
+            console.log(response.users, 'res')
+            for (let u = 0; u < response.users.length; u++) {
+              for (let k = 0; k < response.users[u].blacklist.length; k++) {
+                console.log('found dupe')
+                if (filter.includes(response.users[u].blacklist[k].id)) {
+                  result.push(response.users[u]);
+                }
+              }
+            }
+            console.log(response.users, 'people')
             setPeople(response);
           })
       })
@@ -203,7 +220,9 @@ export default function Upload({ route, navigation }) {
     }
   }
 
-  async function displayNextUser() {
+  // console.log(people, 'people');
+
+  function displayNextUser() {
     if (i === people.users.length) {
       setCurrent(noUsers);
       setCommonDislikes([]);
@@ -217,11 +236,6 @@ export default function Upload({ route, navigation }) {
 
     setI((el) => el + 1);
   }
-
-  let syncedCommon;
-
-  // console.log(current)
-  // console.log(syncedCommon, 'common')
 
   function hidePressable() {
     setPressable(false);
@@ -286,7 +300,7 @@ export default function Upload({ route, navigation }) {
         return response.json()
       })
       .then((response) => {
-        console.log(response, 'here')
+        // console.log(response, 'here')
         setNewTopics(response);
       })
   }

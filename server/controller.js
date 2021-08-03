@@ -144,7 +144,7 @@ module.exports.addQuestion = async (req, res) => {
 module.exports.getPeople = async (req, res) => {
   try {
     const likesArray = req.body;
-    // console.log(likesArray, 'REQUEST')
+    console.log(likesArray, 'REQUEST')
     if (!likesArray.disliked) {
       res.send('nothing')
       return
@@ -152,7 +152,13 @@ module.exports.getPeople = async (req, res) => {
     const response = await topicFinder(likesArray);
     // console.log(response, 'response!!!!')
     const newPeople = await peopleFinder(response, req.body.id, req.body.blacklist);
+    // console.log(newPeople, 'newpeople')
+    // const newObj = {
+    //   dislikes: response.dislikes,
+    //   users: newPeople
+    // }
     response.users = newPeople;
+    // console.log(newObj, 'newObj');
     res.status(201);
     res.json(response);
   } catch (err) {
@@ -310,23 +316,15 @@ async function peopleFinder(list, userID, blacklist) {
     }
   }
 
-  for (let k = 0; k < users.length; k++) {
-    for (let h = 0; h < blacklist.length; h++) {
-      if (users[k]._id.toString() === blacklist[h].id.toString()) {
-        // console.log(users[k],'------------', blacklist[h])
-        users.splice(k, 1);
-      }
-    }
-  }
-
-  for (let u = 0; u < users.length; u++) {
-    for (let d = 0; d < users[u].likedUsers.length; d++) {
-      if (userID.toString() === users[u].likedUsers[d].id) {
-        users.splice(u, 1);
-      }
-    }
-  }
-
+  // for (let k = 0; k < users.length; k++) {
+  //   for (let h = 0; h < blacklist.length; h++) {
+  //     if (users[k]._id.toString() === blacklist[h].id.toString()) {
+  //       // console.log(users[k],'------------', blacklist[h])
+  //       users.splice(k, 1);
+  //     }
+  //   }
+  // }
+  // console.log(users)
   return users;
 }
 

@@ -38,7 +38,8 @@ function Register ( { navigation } ) {
         lastName: register.lastName,
         email: register.email,
         password: register.password,
-        step: 0
+        step: 0,
+        likedUsers: []
       })
     })
       .then((response) => {
