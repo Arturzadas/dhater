@@ -88,7 +88,8 @@ export default function Upload({ route, navigation }) {
           },
           body: JSON.stringify({
             disliked: synced.disliked,
-            id: synced._id
+            id: synced._id,
+            blacklist: synced.blacklist
           })
         })
           .then((response) => {
@@ -178,7 +179,25 @@ export default function Upload({ route, navigation }) {
         .then(response => {
           if (response) {
             fetchUserUpdates(false);
-          } else {
+          }
+        })
+    } else {
+      await fetch(`${api}/sendblacklist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          liked: current._id,
+          user: dashUser._id
+        })
+      })
+        .then((response) => {
+          return response.json()
+        })
+        .then(response => {
+          if (response) {
+            fetchUserUpdates(false);
           }
         })
     }
@@ -269,25 +288,6 @@ export default function Upload({ route, navigation }) {
       .then((response) => {
         console.log(response, 'here')
         setNewTopics(response);
-      })
-  }
-
-  async function newDislike(el) {
-    fetch(`${api}/updatelike`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user: dashUser,
-        topic: el
-      })
-    })
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        fetchUserUpdates()
       })
   }
 
@@ -421,10 +421,14 @@ export default function Upload({ route, navigation }) {
                   ><Text style={styles.buttonText}>✔
                     </Text></TouchableOpacity>
                   <Text style={styles.currentNameDisplay}>{current.firstName}</Text>
-                  <TouchableOpacity
-                    onPress={() => displayNextUser()}
-                    style={styles.dislikeBtn}
-                  ><Text style={styles.buttonText}>✖
+                <TouchableOpacity
+                  onPress={() => {
+                    displayNextUser();
+                    handleMatching(false);
+                    }
+                  }
+                  style={styles.dislikeBtn}
+                ><Text style={styles.buttonText}>✖
                     </Text>
                   </TouchableOpacity>
                 </View>

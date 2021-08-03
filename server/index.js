@@ -41,6 +41,7 @@ app.post('/postmessage', controller.postMessage);
 app.post('/getdislikes', controller.getDislikes);
 app.post('/getmatchchat', controller.getChat);
 app.post('/getnewtopics', controller.getNewTopics);
+app.post('/sendblacklist', controller.handleDislike);
 
 
 

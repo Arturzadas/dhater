@@ -57,7 +57,6 @@ module.exports.updatePic = async (req, res) => {
   }
 }
 
-
 module.exports.getTopics = async (req, res) => {
   try {
     const topics = await LikesModel.find();
@@ -87,7 +86,6 @@ module.exports.getDislikes = async (req, res) => {
     console.log('Error at controller:    ', err)
   }
 }
-
 
 module.exports.updateLikes = async (req, res) => {
   try {
@@ -129,7 +127,6 @@ module.exports.updateSteps = async (req, res) => {
   }
 }
 
-
 module.exports.addQuestion = async (req, res) => {
   try {
     const question = await req.body;
@@ -154,7 +151,7 @@ module.exports.getPeople = async (req, res) => {
     }
     const response = await topicFinder(likesArray);
     // console.log(response, 'response!!!!')
-    const newPeople = await peopleFinder(response, req.body.id);
+    const newPeople = await peopleFinder(response, req.body.id, req.body.blacklist);
     response.users = newPeople;
     res.status(201);
     res.json(response);
@@ -222,6 +219,25 @@ module.exports.handleLike = async (req, res) => {
   }
 }
 
+module.exports.handleDislike = async (req, res) => {
+  try {
+    const request = req.body;
+    // console.log(request);
+    //helper function to loop through likes
+    //TODO check if previously liked
+    const updateUser = await UsersModel.findOneAndUpdate(
+      { _id: request.user },
+      { $push: { blacklist: { id: request.liked } } },
+      { new: true }
+    );
+    res.status(201);
+    res.json(updateUser);
+  } catch (err) {
+    res.status(500);
+    console.log('Error at controller: handleLike    ', err);
+  }
+}
+
 async function checkLikeBack(userId, likedId) {
   const me = await UsersModel.findOne({ _id: userId });
   for (let k of me.likedUsers) {
@@ -232,6 +248,7 @@ async function checkLikeBack(userId, likedId) {
   }
   matchBool = false;
 }
+
 async function createMatch(userId, likedId) {
   const newChat = await ChatModel.create({
     user1: userId,
@@ -243,6 +260,7 @@ async function createMatch(userId, likedId) {
   // console.log(newChat);
   matchBool = true;
 }
+
 module.exports.getMatches = async (req, res) => {
   try {
     const userId = req.body.user;
@@ -271,7 +289,7 @@ async function topicFinder(list) {
   return response;
 }
 
-async function peopleFinder(list, blackListID) {
+async function peopleFinder(list, userID, blacklist) {
   const users = [];
   // console.log(list, 'list')
 
@@ -283,7 +301,7 @@ async function peopleFinder(list, blackListID) {
       // console.log(id,'id', blackListID.toString(), 'blacklist')
       for (let i = 0; i < users.length; i++) {
         // console.log(users[i]._id.toString(), 'userId')
-        if (users[i]._id.toString() === id.toString() || users[i]._id.toString() === blackListID.toString()) { //check later so I don't see myself --> DONE
+        if (users[i]._id.toString() === id.toString() || users[i]._id.toString() === userID.toString()) { //check later so I don't see myself --> DONE
           // console.log('found duplicate or bug', users[i])
           users.splice(i, 1);
         }
@@ -291,6 +309,24 @@ async function peopleFinder(list, blackListID) {
       users.push(oneuser)
     }
   }
+
+  for (let k = 0; k < users.length; k++) {
+    for (let h = 0; h < blacklist.length; h++) {
+      if (users[k]._id.toString() === blacklist[h].id.toString()) {
+        // console.log(users[k],'------------', blacklist[h])
+        users.splice(k, 1);
+      }
+    }
+  }
+
+  for (let u = 0; u < users.length; u++) {
+    for (let d = 0; d < users[u].likedUsers.length; d++) {
+      if (userID.toString() === users[u].likedUsers[d].id) {
+        users.splice(u, 1);
+      }
+    }
+  }
+
   return users;
 }
 

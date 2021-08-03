@@ -14,6 +14,7 @@ const UsersSchema = new Schema({
   lastName: String,
   step: Number,
   imgsrc: String,
+  blacklist: [{id: String}],
   disliked: [{ id: String }],
   likedUsers: [{ id: String }],
   matches: [{
